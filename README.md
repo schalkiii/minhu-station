@@ -140,11 +140,12 @@ python -m http.server 4173
 ```text
 minhu-station/
 ├── index.html                  # 应用本体（结构 / 样式 / 逻辑）
+├── .nojekyll                   # GitHub Pages 跳过 Jekyll 构建
 ├── assets/
 │   ├── og-cover.png            # 1200×630 分享封面
 │   └── share-poster.png        # 1080×1440 竖版海报
 ├── docs/screenshots/           # README 与参赛截图
-├── submission/                 # 参赛文案与报名信息草稿
+├── submission/                 # 参赛文案、报名信息与提交清单
 ├── README.md
 └── LICENSE
 ```
