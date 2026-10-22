@@ -5,7 +5,41 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="敏护站 · 慢性敏感人群健康自查助手。隐私优先的纯前端静态工具：所有数据仅保存在浏览器本地，无登录、无埋点、无广告、零第三方请求。">
 <title>敏护站 · 慢性敏感人群健康自查助手</title>
+<link rel="canonical" href="https://schalkiii.github.io/minhu-station/">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#f4f6f5" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1b211e" media="(prefers-color-scheme: dark)">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="敏护站">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:title" content="敏护站 · 慢性敏感人群健康自查助手">
+<meta property="og:description" content="隐私优先的开源健康自我观测工作台：健康自查、诱因日志、养护知识库、休息计时器。数据只留在你的浏览器，零第三方请求。">
+<meta property="og:url" content="https://schalkiii.github.io/minhu-station/">
+<meta property="og:image" content="https://schalkiii.github.io/minhu-station/assets/og-cover.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="敏护站 · 慢性敏感人群健康自查助手界面预览">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="敏护站 · 慢性敏感人群健康自查助手">
+<meta name="twitter:description" content="隐私优先的开源健康自我观测工作台：健康自查、诱因日志、养护知识库、休息计时器。">
+<meta name="twitter:image" content="https://schalkiii.github.io/minhu-station/assets/og-cover.png">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%235b8a72'/%3E%3Cpath d='M9 17.5l4.5 4.5L23 11' stroke='%23fff' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<script>
+/* Apply the saved theme before first paint to avoid a light/dark flash. */
+(function () {
+  try {
+    var saved = JSON.parse(window.localStorage.getItem("minhu-station-data-v1") || "{}");
+    var mode = saved.settings && saved.settings.themeMode;
+    if (mode !== "light" && mode !== "dark") {
+      mode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    }
+    document.documentElement.setAttribute("data-theme", mode);
+  } catch (error) { /* Default theme applies from CSS. */ }
+})();
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"敏护站","alternateName":"Minhu Station","url":"https://schalkiii.github.io/minhu-station/","description":"隐私优先的慢性敏感人群健康自查与诱因记录工具，所有数据仅保存在浏览器本地。","applicationCategory":"HealthApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript and localStorage","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"},"isAccessibleForFree":true,"license":"https://opensource.org/licenses/MIT"}
+</script>
 <style>
 /* ============================================================
    Minhu Station - hand-written CSS, zero external dependencies.
@@ -76,6 +110,18 @@ body {
 }
 button { font-family: inherit; cursor: pointer; }
 input, select, textarea { font-family: inherit; font-size: 0.95rem; }
+:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+.skip-link {
+  position: absolute; left: 12px; top: -60px; z-index: 200;
+  background: var(--color-accent); color: #fff; padding: 9px 16px;
+  border-radius: var(--radius-small); font-size: 0.9rem; text-decoration: none;
+}
+.skip-link:focus { top: 10px; }
+.noscript-note {
+  margin: 20px auto; max-width: 640px; padding: 14px 18px;
+  background: var(--color-warn-soft); border: 1px solid var(--color-warn-border);
+  border-radius: var(--radius-card); color: var(--color-text); font-size: 0.9rem;
+}
 
 /* ---------- Header & navigation ---------- */
 .site-header {
@@ -245,6 +291,13 @@ main { max-width: 1080px; margin: 0 auto; padding: 26px 20px 60px; }
 .stat-cell .stat-value { font-size: 1.45rem; font-weight: 700; color: var(--color-accent-strong); }
 .stat-cell .stat-label { font-size: 0.8rem; color: var(--color-text-faint); }
 .stat-cell .stat-extra { font-size: 0.85rem; color: var(--color-text-secondary); margin-top: 2px; }
+.stat-tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 1px 0 5px; }
+.stat-tags span {
+  background: var(--color-surface-soft); border: 1px solid var(--color-border);
+  border-radius: 999px; padding: 2px 10px; font-size: 0.8rem;
+  font-weight: 600; color: var(--color-text-secondary);
+}
+.stat-tags .stat-empty { font-weight: 400; color: var(--color-text-faint); }
 
 .log-entry {
   border: 1px solid var(--color-border); border-radius: var(--radius-card);
@@ -262,6 +315,30 @@ main { max-width: 1080px; margin: 0 auto; padding: 26px 20px 60px; }
 .mini-tag.trigger { background: var(--color-accent-soft); color: var(--color-accent-strong); }
 .log-note { font-size: 0.88rem; color: var(--color-text-secondary); margin-top: 6px; white-space: pre-wrap; }
 .empty-hint { text-align: center; color: var(--color-text-faint); font-size: 0.9rem; padding: 30px 0; }
+
+/* ---------- 14-day trend ---------- */
+.trend-card { padding: 18px 22px; }
+.trend-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+.trend-head h3 { font-size: 1rem; margin: 0; }
+.trend-summary { font-size: 0.82rem; color: var(--color-text-faint); }
+.trend-scroll { overflow-x: auto; padding-bottom: 2px; }
+.trend-chart {
+  display: grid; grid-auto-flow: column; grid-auto-columns: minmax(28px, 1fr);
+  gap: 6px; align-items: end; min-width: 520px; height: 132px;
+}
+.trend-col { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; gap: 5px; }
+.trend-count { font-size: 0.72rem; color: var(--color-text-faint); font-variant-numeric: tabular-nums; line-height: 1; }
+.trend-bar-track { width: 100%; height: 88px; display: flex; align-items: flex-end; }
+.trend-bar {
+  width: 100%; min-height: 3px; border-radius: 5px 5px 2px 2px;
+  background: var(--color-accent-soft); border: 1px solid var(--color-border);
+  transition: background 0.15s;
+}
+.trend-col.has-data .trend-bar { background: var(--color-accent); border-color: var(--color-accent); }
+.trend-col.today .trend-bar { background: var(--color-info); border-color: var(--color-info); }
+.trend-date { font-size: 0.68rem; color: var(--color-text-faint); white-space: nowrap; line-height: 1.2; }
+.trend-date-short { display: none; }
+.trend-col.today .trend-date { color: var(--color-info); font-weight: 700; }
 
 /* ---------- Knowledge base ---------- */
 .kb-group-title { font-size: 1.02rem; font-weight: 700; margin: 24px 0 10px; display: flex; align-items: center; gap: 8px; }
@@ -331,25 +408,68 @@ main { max-width: 1080px; margin: 0 auto; padding: 26px 20px 60px; }
 }
 .site-footer .footer-disclaimer { color: var(--color-text-secondary); max-width: 640px; margin: 0 auto 8px; }
 
+/* ---------- Printable visit report ---------- */
+#printReport { display: none; }
+.print-title { font-size: 1.5rem; margin-bottom: 4px; }
+.print-meta { font-size: 0.82rem; color: #555; margin-bottom: 14px; }
+.print-disclaimer { border: 1px solid #d8c9a3; background: #faf6ea; padding: 10px 12px; font-size: 0.82rem; border-radius: 8px; margin: 12px 0 18px; }
+.print-section { margin-top: 20px; }
+.print-section h2 { font-size: 1.05rem; border-bottom: 1px solid #bbb; padding-bottom: 4px; margin-bottom: 8px; }
+.print-kv { font-size: 0.82rem; color: #444; margin-bottom: 8px; }
+.print-quiz { border: 1px solid #ccc; border-radius: 8px; padding: 9px 12px; margin-bottom: 8px; font-size: 0.85rem; }
+.print-quiz b { display: inline-block; margin-right: 8px; }
+.print-table { width: 100%; border-collapse: collapse; font-size: 0.78rem; }
+.print-table th, .print-table td { border: 1px solid #bbb; padding: 5px 7px; text-align: left; vertical-align: top; }
+.print-table th { background: #eee; }
+.print-empty { font-size: 0.85rem; color: #666; }
+.print-footer { margin-top: 24px; border-top: 1px solid #bbb; padding-top: 8px; font-size: 0.75rem; color: #555; }
+
+@media print {
+  @page { margin: 14mm; }
+  html, body { background: #fff !important; color: #111 !important; }
+  .skip-link, .site-header, main, .site-footer, .modal-backdrop, .toast, .noscript-note { display: none !important; }
+  #printReport { display: block !important; }
+  .print-table { break-inside: auto; }
+  .print-table tr { break-inside: avoid; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+}
+
+@media (max-width: 640px) {
+  .stats-bar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .stat-cell-wide { grid-column: 1 / -1; }
+}
+
 @media (max-width: 560px) {
   main { padding: 20px 14px 50px; }
   .card { padding: 16px; }
   .timer-display { font-size: 2.8rem; }
   .brand-sub { display: none; }
+  .trend-card { padding: 16px 14px; }
+  .trend-chart { min-width: 0; gap: 3px; grid-auto-columns: minmax(0, 1fr); }
+  .trend-count { font-size: 0.62rem; }
+  .trend-date { font-size: 0.6rem; }
+  .trend-date-long { display: none; }
+  .trend-date-short { display: inline; }
 }
 </style>
 </head>
 <body>
+<a class="skip-link" href="#mainContent">跳到主要内容</a>
+<noscript><div class="noscript-note">敏护站需要启用 JavaScript 才能进行本地计算与记录。页面不会向任何服务器发送数据，请放心在浏览器设置中允许本页运行脚本。</div></noscript>
 
 <!-- ================= Header ================= -->
 <header class="site-header">
   <div class="header-inner">
     <div class="brand">
-      <div class="brand-mark">敏</div>
+      <div class="brand-mark" aria-hidden="true">敏</div>
       <div>敏护站<span class="brand-sub">慢性敏感人群健康自查助手</span></div>
     </div>
     <nav class="main-nav" id="desktopNav" aria-label="主导航">
-      <button class="nav-tab active" data-tab="home">首页</button>
+      <button class="nav-tab active" data-tab="home" aria-current="page">首页</button>
       <button class="nav-tab" data-tab="check">健康自查</button>
       <button class="nav-tab" data-tab="log">诱因日志</button>
       <button class="nav-tab" data-tab="knowledge">养护知识库</button>
@@ -358,11 +478,11 @@ main { max-width: 1080px; margin: 0 auto; padding: 26px 20px 60px; }
     </nav>
     <div class="header-actions">
       <button class="icon-button" id="themeToggle" title="切换深色 / 浅色模式" aria-label="切换主题">🌓</button>
-      <button class="icon-button hamburger" id="hamburgerBtn" title="菜单" aria-label="打开菜单">☰</button>
+      <button class="icon-button hamburger" id="hamburgerBtn" title="菜单" aria-label="打开菜单" aria-expanded="false" aria-controls="mobileNav">☰</button>
     </div>
   </div>
   <nav class="mobile-nav" id="mobileNav" aria-label="移动端导航">
-    <button class="nav-tab active" data-tab="home">首页</button>
+    <button class="nav-tab active" data-tab="home" aria-current="page">首页</button>
     <button class="nav-tab" data-tab="check">健康自查</button>
     <button class="nav-tab" data-tab="log">诱因日志</button>
     <button class="nav-tab" data-tab="knowledge">养护知识库</button>
@@ -371,7 +491,7 @@ main { max-width: 1080px; margin: 0 auto; padding: 26px 20px 60px; }
   </nav>
 </header>
 
-<main>
+<main id="mainContent" tabindex="-1">
   <!-- ================= Panel: Home ================= -->
   <section class="panel active" id="panel-home">
     <div class="disclaimer-banner">
@@ -380,6 +500,11 @@ main { max-width: 1080px; margin: 0 auto; padding: 26px 20px 60px; }
     </div>
     <h1 class="section-title">你好，这里是敏护站</h1>
     <p class="section-sub">一份安静、干净、只属于你自己的健康自我观测工作台。</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px">
+      <button class="btn btn-primary" data-go-tab="check">开始健康自查</button>
+      <button class="btn" data-go-tab="log">记录今天</button>
+      <button class="btn" data-go-tab="timer">开启休息提醒</button>
+    </div>
 
     <div class="card">
       <h3>🔒 隐私承诺</h3>
@@ -443,6 +568,16 @@ main { max-width: 1080px; margin: 0 auto; padding: 26px 20px 60px; }
 
     <div class="stats-bar" id="logStatsBar"></div>
 
+    <div class="card trend-card">
+      <div class="trend-head">
+        <h3>📈 近 14 天记录趋势</h3>
+        <span class="trend-summary" id="logTrendSummary"></span>
+      </div>
+      <div class="trend-scroll">
+        <div class="trend-chart" id="logTrendChart" role="img" aria-label="近 14 天诱因日志记录数量柱状图"></div>
+      </div>
+    </div>
+
     <div class="card">
       <h3>✏️ 新增记录</h3>
       <label class="field-label" for="logDateInput">日期</label>
@@ -463,7 +598,10 @@ main { max-width: 1080px; margin: 0 auto; padding: 26px 20px 60px; }
     <div class="card">
       <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
         <h3 style="margin:0">📚 历史记录</h3>
-        <button class="btn btn-sm" id="exportMarkdownButton">导出 Markdown</button>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn btn-sm" id="printReportButton">🖨️ 就诊参考报告</button>
+          <button class="btn btn-sm" id="exportMarkdownButton">导出 Markdown</button>
+        </div>
       </div>
       <label class="field-label">按标签筛选（选中任意标签即启用筛选，可叠加）</label>
       <div class="chip-row" id="logFilterChips"></div>
@@ -490,7 +628,7 @@ main { max-width: 1080px; margin: 0 auto; padding: 26px 20px 60px; }
       <label class="field-label" for="timerMinutesInput" style="text-align:left">自定义时长（分钟，1–180）</label>
       <input type="number" class="text-input" id="timerMinutesInput" min="1" max="180" value="45" style="max-width:160px;margin:0 auto">
       <div class="timer-display" id="timerDisplay">45:00</div>
-      <div class="timer-status" id="timerStatus">就绪</div>
+      <div class="timer-status" id="timerStatus" role="status" aria-live="polite">就绪</div>
       <div class="timer-progress"><div class="timer-progress-fill" id="timerProgressFill"></div></div>
       <div class="timer-controls">
         <button class="btn btn-primary" id="timerStartButton">开始</button>
@@ -503,7 +641,7 @@ main { max-width: 1080px; margin: 0 auto; padding: 26px 20px 60px; }
         <button class="btn btn-sm timer-preset" data-minutes="45">45 分钟</button>
         <button class="btn btn-sm timer-preset" data-minutes="60">60 分钟</button>
       </div>
-      <p class="score-note" style="margin-top:18px">提示：计时状态保存在页面内存中，刷新页面会重置。建议保持本页面打开。</p>
+      <p class="score-note" style="margin-top:18px">计时进度会保存在本机：刷新或关闭页面后再次打开会自动续上；若关闭期间已到点，重新打开时只作提示，不补响铃。</p>
     </div>
   </section>
 
@@ -525,6 +663,10 @@ main { max-width: 1080px; margin: 0 auto; padding: 26px 20px 60px; }
         <label class="btn" style="cursor:pointer">选择文件<input type="file" id="importFileInput" accept=".json,application/json" style="display:none"></label>
       </div>
       <div class="data-row">
+        <div><h4>🧪 载入示例数据</h4><p>填入一组虚构的问卷结果与日志，方便快速预览统计、趋势图与报告效果。示例数据会覆盖当前记录，随时可清空。</p></div>
+        <button class="btn btn-sm" id="loadDemoButton">载入示例</button>
+      </div>
+      <div class="data-row">
         <div><h4>🗑️ 一键清空本地记录</h4><p>删除本机保存的全部问卷结果与诱因日志，<strong>不可恢复</strong>，请先导出备份。</p></div>
         <button class="btn btn-danger" id="clearAllButton">清空全部记录</button>
       </div>
@@ -535,10 +677,14 @@ main { max-width: 1080px; margin: 0 auto; padding: 26px 20px 60px; }
 <footer class="site-footer">
   <p class="footer-disclaimer">⚠️ 敏护站仅提供健康科普、诱因记录与风险自查参考，不能替代执业医师的诊断与治疗。如有不适，请及时就医。</p>
   <p>敏护站 · 隐私优先的开源公益自查工具 · MIT License · 数据仅保存在你的浏览器中</p>
+  <p style="margin-top:6px"><a href="https://github.com/schalkiii/minhu-station" target="_blank" rel="noopener noreferrer" style="color:var(--color-accent-strong)">GitHub 开源仓库</a> · <a href="https://schalkiii.github.io/minhu-station/" style="color:var(--color-accent-strong)">在线使用</a></p>
 </footer>
 
+<!-- ================= Printable report ================= -->
+<section id="printReport" aria-hidden="true"></section>
+
 <!-- ================= Modal ================= -->
-<div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true">
+<div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalBody">
   <div class="modal">
     <h3 id="modalTitle">确认操作</h3>
     <div class="modal-body" id="modalBody"></div>
@@ -549,7 +695,7 @@ main { max-width: 1080px; margin: 0 auto; padding: 26px 20px 60px; }
   </div>
 </div>
 
-<div class="toast" id="toastElement"></div>
+<div class="toast" id="toastElement" role="status" aria-live="polite"></div>
 
 <script>
 "use strict";
@@ -750,9 +896,22 @@ function formatDateTime(isoString) {
   return date.getFullYear() + "-" + pad(date.getMonth() + 1) + "-" + pad(date.getDate()) + " " + pad(date.getHours()) + ":" + pad(date.getMinutes());
 }
 
+/* Local (not UTC) calendar date, so early-morning entries stay on the right day. */
+function toLocalDateString(date) {
+  const value = date || new Date();
+  const pad = (n) => String(n).padStart(2, "0");
+  return value.getFullYear() + "-" + pad(value.getMonth() + 1) + "-" + pad(value.getDate());
+}
+
+function addDays(date, offset) {
+  const value = new Date(date);
+  value.setDate(value.getDate() + offset);
+  return value;
+}
+
 function escapeHtml(text) {
   const div = document.createElement("div");
-  div.textContent = text;
+  div.textContent = text == null ? "" : String(text);
   return div.innerHTML;
 }
 
@@ -767,17 +926,26 @@ function showToast(message) {
 
 /* Modal helper. onConfirm is invoked only when user presses confirm. */
 let modalConfirmHandler = null;
+let modalReturnFocus = null;
 function openConfirmModal(title, bodyText, confirmLabel, onConfirm) {
+  modalReturnFocus = document.activeElement;
   queryElement("#modalTitle").textContent = title;
   queryElement("#modalBody").textContent = bodyText;
   queryElement("#modalConfirmButton").textContent = confirmLabel || "确认";
   modalConfirmHandler = onConfirm;
   queryElement("#modalBackdrop").classList.add("open");
+  queryElement("#modalConfirmButton").focus();
 }
 function closeConfirmModal() {
   queryElement("#modalBackdrop").classList.remove("open");
   modalConfirmHandler = null;
+  const previousFocus = modalReturnFocus;
+  modalReturnFocus = null;
+  if (previousFocus && previousFocus.isConnected && typeof previousFocus.focus === "function") previousFocus.focus();
 }
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && queryElement("#modalBackdrop").classList.contains("open")) closeConfirmModal();
+});
 queryElement("#modalCancelButton").addEventListener("click", closeConfirmModal);
 queryElement("#modalBackdrop").addEventListener("click", (event) => {
   if (event.target === queryElement("#modalBackdrop")) closeConfirmModal();
@@ -802,21 +970,45 @@ function downloadTextFile(fileName, textContent, mimeType) {
 
 /* ---------------- Navigation ---------------- */
 
-function switchTab(tabName) {
+const TAB_NAMES = ["home", "check", "log", "knowledge", "timer", "data"];
+
+function tabFromHash() {
+  const requested = window.location.hash.replace(/^#\/?/, "");
+  return TAB_NAMES.includes(requested) ? requested : "home";
+}
+
+function activateTab(tabName) {
+  const activeTab = TAB_NAMES.includes(tabName) ? tabName : "home";
   queryAllElements(".nav-tab").forEach((button) => {
-    button.classList.toggle("active", button.dataset.tab === tabName);
+    const isActive = button.dataset.tab === activeTab;
+    button.classList.toggle("active", isActive);
+    if (isActive) button.setAttribute("aria-current", "page");
+    else button.removeAttribute("aria-current");
   });
   queryAllElements(".panel").forEach((panel) => {
-    panel.classList.toggle("active", panel.id === "panel-" + tabName);
+    panel.classList.toggle("active", panel.id === "panel-" + activeTab);
   });
   queryElement("#mobileNav").classList.remove("open");
+  queryElement("#hamburgerBtn").setAttribute("aria-expanded", "false");
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
+
+function goToTab(tabName) {
+  const target = TAB_NAMES.includes(tabName) ? tabName : "home";
+  activateTab(target);
+  if (window.location.hash !== "#/" + target) window.location.hash = "#/" + target;
+}
+
 queryAllElements(".nav-tab").forEach((button) => {
-  button.addEventListener("click", () => switchTab(button.dataset.tab));
+  button.addEventListener("click", () => goToTab(button.dataset.tab));
 });
+queryAllElements("[data-go-tab]").forEach((button) => {
+  button.addEventListener("click", () => goToTab(button.dataset.goTab));
+});
+window.addEventListener("hashchange", () => activateTab(tabFromHash()));
 queryElement("#hamburgerBtn").addEventListener("click", () => {
-  queryElement("#mobileNav").classList.toggle("open");
+  const isOpen = queryElement("#mobileNav").classList.toggle("open");
+  queryElement("#hamburgerBtn").setAttribute("aria-expanded", String(isOpen));
 });
 
 /* ---------------- Theme ---------------- */
@@ -842,18 +1034,33 @@ function buildQuizResultLevels(maxScore) {
   return { lowMax: Math.round(maxScore * 0.25), mediumMax: Math.round(maxScore * 0.6) };
 }
 
+function getQuizMaxScore(quiz) {
+  return quiz.questions.reduce((total, question) => {
+    const questionMax = question.type === "single"
+      ? Math.max(...question.options.map((option) => option[1]))
+      : question.options.reduce((sum, option) => sum + option[1], 0);
+    return total + questionMax;
+  }, 0);
+}
+
+function resolveQuizLevel(score, maxScore) {
+  const levels = buildQuizResultLevels(maxScore);
+  if (score <= levels.lowMax) {
+    return { key: "low", label: "日常观察", text: "当前观察到的负荷较低，属于普通人群常见范围。" };
+  }
+  if (score <= levels.mediumMax) {
+    return { key: "medium", label: "建议多加留意", text: "观察到中等程度的负荷信号，建议开始有针对性的日常养护。" };
+  }
+  return { key: "high", label: "建议尽快就医评估", text: "观察到的信号较多或较重，建议交给专业医生评估。" };
+}
+
 function renderQuestionnaires() {
   const container = queryElement("#quizContainer");
   container.innerHTML = "";
   QUESTIONNAIRES.forEach((quiz) => {
     const card = document.createElement("div");
     card.className = "card";
-    const maxScore = quiz.questions.reduce((total, question) => {
-      const questionMax = question.type === "single"
-        ? Math.max(...question.options.map((option) => option[1]))
-        : question.options.reduce((sum, option) => sum + option[1], 0);
-      return total + questionMax;
-    }, 0);
+    const maxScore = getQuizMaxScore(quiz);
 
     card.innerHTML =
       '<div class="quiz-meta"><span class="quiz-tag">' + escapeHtml(quiz.tag) + '</span></div>' +
@@ -891,9 +1098,15 @@ function renderQuestionnaires() {
   });
   queryAllElements(".quiz-reset-button").forEach((button) => {
     button.addEventListener("click", () => {
-      const quizElement = queryElement('.quiz-questions[data-quiz-id="' + button.dataset.quizId + '"]');
-      queryAllElementsIn(quizElement, "input").forEach((input) => { input.checked = false; });
-      queryElement('.quiz-result-slot[data-quiz-id="' + button.dataset.quizId + '"]').innerHTML = "";
+      const quizId = button.dataset.quizId;
+      const quizElement = queryElement('.quiz-questions[data-quiz-id="' + quizId + '"]');
+      queryAllIn(quizElement, "input").forEach((input) => { input.checked = false; });
+      queryElement('.quiz-result-slot[data-quiz-id="' + quizId + '"]').innerHTML = "";
+      if (appState.quizResults[quizId]) {
+        delete appState.quizResults[quizId];
+        saveState();
+      }
+      showToast("已清空本题作答");
     });
   });
 }
@@ -901,19 +1114,11 @@ function renderQuestionnaires() {
 function queryAllIn(rootElement, selector) { return Array.from(rootElement.querySelectorAll(selector)); }
 
 function buildResultHtml(quiz, score, maxScore, dateLabel) {
-  const levels = buildQuizResultLevels(maxScore);
-  let levelKey, levelLabel, levelText;
-  if (score <= levels.lowMax) {
-    levelKey = "low"; levelLabel = "日常观察"; levelText = "当前观察到的负荷较低，属于普通人群常见范围。";
-  } else if (score <= levels.mediumMax) {
-    levelKey = "medium"; levelLabel = "建议多加留意"; levelText = "观察到中等程度的负荷信号，建议开始有针对性的日常养护。";
-  } else {
-    levelKey = "high"; levelLabel = "建议尽快就医评估"; levelText = "观察到的信号较多或较重，建议交给专业医生评估。";
-  }
-  const adviceItems = quiz.advice[levelKey].map((item) => "<li>" + escapeHtml(item) + "</li>").join("");
-  return '<div class="quiz-result level-' + levelKey + '">' +
-    '<div class="level-label">结果：' + levelLabel + '</div>' +
-    '<div style="font-size:0.9rem">' + escapeHtml(levelText) + '</div>' +
+  const level = resolveQuizLevel(score, maxScore);
+  const adviceItems = quiz.advice[level.key].map((item) => "<li>" + escapeHtml(item) + "</li>").join("");
+  return '<div class="quiz-result level-' + level.key + '">' +
+    '<div class="level-label">结果：' + level.label + '</div>' +
+    '<div style="font-size:0.9rem">' + escapeHtml(level.text) + '</div>' +
     '<ul>' + adviceItems + '</ul>' +
     '<div class="score-note">得分 ' + score + ' / ' + maxScore + ' · 计算于 ' + escapeHtml(dateLabel) + ' · 本结果保存在本机，不构成诊断</div>' +
     '</div>';
@@ -941,12 +1146,7 @@ function submitQuiz(quizId) {
     return;
   }
 
-  const maxScore = quiz.questions.reduce((total, question) => {
-    const questionMax = question.type === "single"
-      ? Math.max(...question.options.map((option) => option[1]))
-      : question.options.reduce((sum, option) => sum + option[1], 0);
-    return total + questionMax;
-  }, 0);
+  const maxScore = getQuizMaxScore(quiz);
   const dateLabel = formatDateTime(new Date().toISOString());
 
   appState.quizResults[quizId] = { score: score, maxScore: maxScore, dateLabel: dateLabel };
@@ -1021,18 +1221,58 @@ function renderLogFilterChips() {
 function renderLogStats() {
   const bar = queryElement("#logStatsBar");
   const total = appState.logs.length;
-  const weekAgo = new Date(Date.now() - 7 * 24 * 3600 * 1000).toISOString().slice(0, 10);
-  const recent = appState.logs.filter((log) => log.date >= weekAgo).length;
+  const weekStart = toLocalDateString(addDays(new Date(), -6));
+  const recent = appState.logs.filter((log) => log.date >= weekStart).length;
   const triggerCount = {};
-  appState.logs.forEach((log) => log.triggers.forEach((tag) => { triggerCount[tag] = (triggerCount[tag] || 0) + 1; }));
+  appState.logs.forEach((log) => {
+    (Array.isArray(log.triggers) ? log.triggers : []).forEach((tag) => { triggerCount[tag] = (triggerCount[tag] || 0) + 1; });
+  });
   const topTriggers = Object.entries(triggerCount).sort((a, b) => b[1] - a[1]).slice(0, 5);
 
   bar.innerHTML =
     '<div class="stat-cell"><div class="stat-value">' + total + '</div><div class="stat-label">累计记录（条）</div></div>' +
     '<div class="stat-cell"><div class="stat-value">' + recent + '</div><div class="stat-label">近 7 天记录</div></div>' +
-    '<div class="stat-cell"><div class="stat-value" style="font-size:0.95rem;line-height:2.2">' + (topTriggers.length
-      ? escapeHtml(topTriggers.map(([tag, count]) => tag + " ×" + count).join("　"))
-      : "暂无") + '</div><div class="stat-label">高频可疑诱因（仅频率统计，不构成因果结论）</div></div>';
+    '<div class="stat-cell stat-cell-wide"><div class="stat-tags">' + (topTriggers.length
+      ? topTriggers.map(([tag, count]) => '<span>' + escapeHtml(tag) + ' ×' + count + '</span>').join("")
+      : '<span class="stat-empty">暂无</span>') + '</div><div class="stat-label">高频可疑诱因（仅频率统计，不构成因果结论）</div></div>';
+
+  renderTrendChart();
+}
+
+/* Bar chart for the last 14 days, drawn with plain DOM nodes. */
+function renderTrendChart() {
+  const chart = queryElement("#logTrendChart");
+  const summary = queryElement("#logTrendSummary");
+  const days = [];
+  for (let offset = -13; offset <= 0; offset += 1) {
+    const date = addDays(new Date(), offset);
+    days.push({
+      key: toLocalDateString(date),
+      short: (date.getMonth() + 1) + "/" + date.getDate(),
+      dayOfMonth: String(date.getDate()),
+      isToday: offset === 0
+    });
+  }
+  const counts = {};
+  appState.logs.forEach((log) => {
+    if (log.date) counts[log.date] = (counts[log.date] || 0) + 1;
+  });
+  const maxCount = Math.max(1, ...days.map((day) => counts[day.key] || 0));
+  const total = days.reduce((sum, day) => sum + (counts[day.key] || 0), 0);
+  const activeDays = days.filter((day) => counts[day.key]).length;
+  summary.textContent = "共 " + total + " 条 · " + activeDays + " 天有记录";
+
+  chart.innerHTML = days.map((day) => {
+    const count = counts[day.key] || 0;
+    const barHeight = count === 0 ? 3 : Math.max(10, Math.round((count / maxCount) * 100));
+    return '<div class="trend-col' + (count ? " has-data" : "") + (day.isToday ? " today" : "") + '">' +
+      '<span class="trend-count">' + (count || "") + '</span>' +
+      '<div class="trend-bar-track"><div class="trend-bar" style="height:' + barHeight + '%"></div></div>' +
+      '<span class="trend-date"><span class="trend-date-long">' + (day.isToday ? "今天" : day.short) + '</span>' +
+      '<span class="trend-date-short">' + (day.isToday ? "今" : day.dayOfMonth) + '</span></span>' +
+      '</div>';
+  }).join("");
+  chart.setAttribute("aria-label", "近 14 天诱因日志记录数量：" + days.map((day) => day.key + " " + (counts[day.key] || 0) + " 条").join("，"));
 }
 
 function renderLogList() {
@@ -1043,7 +1283,7 @@ function renderLogList() {
         const tags = [].concat(log.symptoms, log.triggers);
         return Array.from(activeLogFilters).every((tag) => tags.includes(tag));
       });
-  const sorted = filtered.slice().sort((a, b) => (b.date + b.createdAt).localeCompare(a.date + a.createdAt));
+  const sorted = filtered.slice().sort((a, b) => ((b.date || "") + (b.createdAt || "")).localeCompare((a.date || "") + (a.createdAt || "")));
 
   if (sorted.length === 0) {
     list.innerHTML = '<div class="empty-hint">' + (activeLogFilters.size ? "当前筛选条件下没有匹配记录" : "还没有记录。上方表单写下第一条吧。") + '</div>';
@@ -1051,11 +1291,11 @@ function renderLogList() {
   }
 
   list.innerHTML = sorted.map((log) => {
-    const symptomTags = log.symptoms.map((tag) => '<span class="mini-tag symptom">' + escapeHtml(tag) + '</span>').join("");
-    const triggerTags = log.triggers.map((tag) => '<span class="mini-tag trigger">' + escapeHtml(tag) + '</span>').join("");
+    const symptomTags = (Array.isArray(log.symptoms) ? log.symptoms : []).map((tag) => '<span class="mini-tag symptom">' + escapeHtml(tag) + '</span>').join("");
+    const triggerTags = (Array.isArray(log.triggers) ? log.triggers : []).map((tag) => '<span class="mini-tag trigger">' + escapeHtml(tag) + '</span>').join("");
     return '<div class="log-entry">' +
       '<div class="log-entry-head"><span class="log-entry-date">' + escapeHtml(log.date) + '</span>' +
-      '<span class="log-entry-actions"><button class="btn btn-sm btn-danger log-delete-button" data-log-id="' + log.id + '">删除</button></span></div>' +
+      '<span class="log-entry-actions"><button class="btn btn-sm btn-danger log-delete-button" data-log-id="' + encodeURIComponent(log.id) + '">删除</button></span></div>' +
       ((symptomTags || triggerTags) ? '<div class="log-tags">' + symptomTags + triggerTags + '</div>' : "") +
       (log.note ? '<div class="log-note">' + escapeHtml(log.note) + '</div>' : "") +
       '</div>';
@@ -1063,12 +1303,14 @@ function renderLogList() {
 
   queryAllElements(".log-delete-button").forEach((button) => {
     button.addEventListener("click", () => {
+      const logId = decodeURIComponent(button.dataset.logId);
       openConfirmModal("删除这条记录？", "删除后无法恢复。", "删除", () => {
-        appState.logs = appState.logs.filter((log) => log.id !== button.dataset.logId);
+        appState.logs = appState.logs.filter((log) => log.id !== logId);
         saveState();
         renderLogStats();
         renderLogFilterChips();
         renderLogList();
+        refreshStorageSummary();
         showToast("已删除");
       });
     });
@@ -1076,7 +1318,7 @@ function renderLogList() {
 }
 
 function resetLogForm() {
-  queryElement("#logDateInput").value = new Date().toISOString().slice(0, 10);
+  queryElement("#logDateInput").value = toLocalDateString(new Date());
   renderChipRow(queryElement("#symptomChips"), SYMPTOM_PRESETS, [], false);
   renderChipRow(queryElement("#triggerChips"), TRIGGER_PRESETS, [], false);
   queryElement("#symptomCustomInput").value = "";
@@ -1111,7 +1353,7 @@ function exportLogsAsMarkdown() {
         const tags = [].concat(log.symptoms, log.triggers);
         return Array.from(activeLogFilters).every((tag) => tags.includes(tag));
       });
-  const sorted = filtered.slice().sort((a, b) => a.date.localeCompare(b.date));
+  const sorted = filtered.slice().sort((a, b) => (a.date || "").localeCompare(b.date || ""));
   const lines = [];
   lines.push("# 敏护站 · 诱因日志导出");
   lines.push("");
@@ -1125,11 +1367,72 @@ function exportLogsAsMarkdown() {
   lines.push("| --- | --- | --- | --- |");
   sorted.forEach((log) => {
     const cell = (text) => text ? text.replace(/\|/g, "\\|").replace(/\n/g, " ") : "—";
-    lines.push("| " + log.date + " | " + cell(log.symptoms.join("、")) + " | " + cell(log.triggers.join("、")) + " | " + cell(log.note) + " |");
+    lines.push("| " + log.date + " | " + cell((log.symptoms || []).join("、")) + " | " + cell((log.triggers || []).join("、")) + " | " + cell(log.note) + " |");
   });
   lines.push("");
-  downloadTextFile("敏护站-诱因日志-" + new Date().toISOString().slice(0, 10) + ".md", lines.join("\n"), "text/markdown;charset=utf-8");
+  downloadTextFile("敏护站-诱因日志-" + toLocalDateString(new Date()) + ".md", lines.join("\n"), "text/markdown;charset=utf-8");
   showToast("已导出 Markdown");
+}
+
+/* ---------------- Printable visit report ---------------- */
+
+function collectTopTriggers(limit) {
+  const counts = {};
+  appState.logs.forEach((log) => {
+    (Array.isArray(log.triggers) ? log.triggers : []).forEach((tag) => { counts[tag] = (counts[tag] || 0) + 1; });
+  });
+  return Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, limit || 5);
+}
+
+function printVisitReport() {
+  const report = queryElement("#printReport");
+  const generatedAt = formatDateTime(new Date().toISOString());
+  const logs = appState.logs.slice().sort((a, b) => (a.date || "").localeCompare(b.date || ""));
+  const weekStart = toLocalDateString(addDays(new Date(), -6));
+  const recentCount = appState.logs.filter((log) => log.date >= weekStart).length;
+  const topTriggers = collectTopTriggers(5);
+
+  const quizBlocks = QUESTIONNAIRES.map((quiz) => {
+    const result = appState.quizResults[quiz.id];
+    if (!result) return "";
+    const maxScore = result.maxScore || getQuizMaxScore(quiz);
+    const level = resolveQuizLevel(Number(result.score) || 0, maxScore);
+    return '<div class="print-quiz"><b>' + escapeHtml(quiz.title) + '</b>' +
+      escapeHtml(level.label) + '（' + Number(result.score) + ' / ' + maxScore + ' 分）' +
+      '<br><span style="color:#555">记录时间：' + escapeHtml(result.dateLabel || "—") + '</span></div>';
+  }).join("");
+
+  const tableRows = logs.map((log) => {
+    const cell = (value) => escapeHtml(value).replace(/\n/g, "<br>");
+    return '<tr><td>' + cell(log.date) + '</td>' +
+      '<td>' + cell((log.symptoms || []).join("、") || "—") + '</td>' +
+      '<td>' + cell((log.triggers || []).join("、") || "—") + '</td>' +
+      '<td>' + cell(log.note || "—") + '</td></tr>';
+  }).join("");
+
+  report.innerHTML =
+    '<h1 class="print-title">敏护站 · 个人健康观察报告</h1>' +
+    '<div class="print-meta">生成时间：' + escapeHtml(generatedAt) + ' · 数据来源：本机浏览器 LocalStorage · 共 ' + logs.length + ' 条日志</div>' +
+    '<div class="print-disclaimer">本报告为个人日常观察记录，仅用于就诊沟通参考，<strong>不构成医学诊断</strong>，也不能替代执业医师的检查与判断。</div>' +
+    '<div class="print-section"><h2>一、问卷自查结果</h2>' + (quizBlocks || '<p class="print-empty">尚未完成问卷自查。</p>') + '</div>' +
+    '<div class="print-section"><h2>二、记录概况</h2><p class="print-kv">累计记录 ' + logs.length + ' 条 · 近 7 天 ' + recentCount + ' 条 · 高频可疑诱因：' +
+      (topTriggers.length ? escapeHtml(topTriggers.map(([tag, count]) => tag + " ×" + count).join("、")) : "暂无") +
+      '（仅频率统计，不构成因果结论）</p></div>' +
+    '<div class="print-section"><h2>三、诱因日志明细</h2>' +
+      (logs.length
+        ? '<table class="print-table"><thead><tr><th style="width:90px">日期</th><th style="width:160px">症状</th><th style="width:180px">可疑诱因</th><th>备注</th></tr></thead><tbody>' + tableRows + '</tbody></table>'
+        : '<p class="print-empty">暂无诱因日志记录。</p>') +
+    '</div>' +
+    '<div class="print-footer">敏护站 · 隐私优先的本地健康自我观测工具 · 本报告全部内容由浏览器本地生成，未上传任何服务器。</div>';
+
+  report.setAttribute("aria-hidden", "false");
+  const previousTitle = document.title;
+  document.title = "敏护站-健康观察报告-" + toLocalDateString(new Date());
+  window.print();
+  setTimeout(() => {
+    document.title = previousTitle;
+    report.setAttribute("aria-hidden", "true");
+  }, 800);
 }
 
 /* ---------------- Knowledge base ---------------- */
@@ -1157,30 +1460,55 @@ function renderKnowledge() {
 
 /* ---------------- Rest timer ---------------- */
 
+const BASE_TITLE = "敏护站 · 慢性敏感人群健康自查助手";
 const timerState = {
   totalSeconds: 45 * 60,
   remainingSeconds: 45 * 60,
   isRunning: false,
+  endsAt: null,
   intervalId: null,
   titleFlashIntervalId: null
 };
 
+function formatClock(totalSeconds) {
+  const safeSeconds = Math.max(0, Math.floor(totalSeconds));
+  const minutes = Math.floor(safeSeconds / 60);
+  const seconds = safeSeconds % 60;
+  return String(minutes).padStart(2, "0") + ":" + String(seconds).padStart(2, "0");
+}
+
+function saveTimerState() {
+  appState.settings.timerMinutes = Math.max(1, Math.round(timerState.totalSeconds / 60));
+  appState.settings.timer = {
+    totalSeconds: timerState.totalSeconds,
+    remainingSeconds: timerState.remainingSeconds,
+    isRunning: timerState.isRunning,
+    endsAt: timerState.endsAt
+  };
+  saveState();
+}
+
 function updateTimerDisplay() {
-  const minutes = Math.floor(timerState.remainingSeconds / 60);
-  const seconds = timerState.remainingSeconds % 60;
-  const padded = String(minutes).padStart(2, "0") + ":" + String(seconds).padStart(2, "0");
+  const padded = formatClock(timerState.remainingSeconds);
   queryElement("#timerDisplay").textContent = padded;
   queryElement("#timerProgressFill").style.width = (100 - (timerState.remainingSeconds / timerState.totalSeconds) * 100) + "%";
+  if (timerState.isRunning && !timerState.titleFlashIntervalId) document.title = padded + " · 敏护站";
 }
 
 function setTimerStatus(text) { queryElement("#timerStatus").textContent = text; }
+
+function restoreDocumentTitle() {
+  document.title = timerState.isRunning
+    ? formatClock(timerState.remainingSeconds) + " · 敏护站"
+    : BASE_TITLE;
+}
 
 function stopTitleFlash() {
   if (timerState.titleFlashIntervalId) {
     clearInterval(timerState.titleFlashIntervalId);
     timerState.titleFlashIntervalId = null;
-    document.title = "敏护站 · 慢性敏感人群健康自查助手";
   }
+  restoreDocumentTitle();
 }
 
 function playReminderTone() {
@@ -1198,65 +1526,126 @@ function playReminderTone() {
       oscillator.stop(audioContext.currentTime + offset + 0.22);
     });
     setTimeout(() => audioContext.close(), 1200);
-  } catch (error) { /* Audio is optional; page reminder still works. */ }
+  } catch (error) { /* Audio is optional; the on-page reminder still works. */ }
 }
 
 function onTimerFinished() {
   timerState.isRunning = false;
+  timerState.endsAt = null;
+  timerState.remainingSeconds = 0;
   clearInterval(timerState.intervalId);
   timerState.intervalId = null;
   queryElement("#timerStartButton").disabled = false;
   queryElement("#timerPauseButton").disabled = true;
   setTimerStatus("⏰ 时间到！起身活动一下吧");
+  saveTimerState();
   playReminderTone();
   openConfirmModal("⏰ 休息时间到", "你已经连续专注了一段时间，\n建议起身活动 2–3 分钟：接杯水、看看远处、伸展一下腰背。", "好的", () => {});
   timerState.titleFlashIntervalId = setInterval(() => {
-    document.title = document.title.startsWith("⏰") ? "敏护站 · 慢性敏感人群健康自查助手" : "⏰ 该休息啦 · 敏护站";
+    document.title = document.title.startsWith("⏰") ? BASE_TITLE : "⏰ 该休息啦 · 敏护站";
   }, 1000);
   setTimeout(stopTitleFlash, 30000);
 }
 
+/* Derive remaining time from the absolute end timestamp, so throttled or
+   backgrounded tabs do not cause drift. */
+function tickTimer() {
+  if (!timerState.isRunning || !timerState.endsAt) return;
+  timerState.remainingSeconds = Math.max(0, Math.ceil((timerState.endsAt - Date.now()) / 1000));
+  updateTimerDisplay();
+  if (timerState.remainingSeconds <= 0) onTimerFinished();
+}
+
 function startTimer() {
   if (timerState.isRunning) return;
-  if (timerState.remainingSeconds <= 0) { resetTimer(); }
+  if (timerState.remainingSeconds <= 0) resetTimer();
   timerState.isRunning = true;
+  timerState.endsAt = Date.now() + timerState.remainingSeconds * 1000;
   stopTitleFlash();
   queryElement("#timerStartButton").disabled = true;
   queryElement("#timerPauseButton").disabled = false;
-  setTimerStatus("计时中……");
-  timerState.intervalId = setInterval(() => {
-    timerState.remainingSeconds -= 1;
-    updateTimerDisplay();
-    if (timerState.remainingSeconds <= 0) onTimerFinished();
-  }, 1000);
+  setTimerStatus("计时中……可以切到别的标签页");
+  updateTimerDisplay();
+  timerState.intervalId = setInterval(tickTimer, 1000);
+  saveTimerState();
 }
 
 function pauseTimer() {
   timerState.isRunning = false;
+  timerState.endsAt = null;
   clearInterval(timerState.intervalId);
   timerState.intervalId = null;
   queryElement("#timerStartButton").disabled = false;
   queryElement("#timerPauseButton").disabled = true;
   setTimerStatus("已暂停");
+  saveTimerState();
+  restoreDocumentTitle();
 }
 
 function resetTimer() {
-  pauseTimer();
+  clearInterval(timerState.intervalId);
+  timerState.intervalId = null;
+  timerState.isRunning = false;
+  timerState.endsAt = null;
   stopTitleFlash();
   const minutesInput = Number(queryElement("#timerMinutesInput").value);
   const minutes = (Number.isFinite(minutesInput) && minutesInput >= 1 && minutesInput <= 180) ? Math.floor(minutesInput) : 45;
   timerState.totalSeconds = minutes * 60;
   timerState.remainingSeconds = minutes * 60;
-  appState.settings.timerMinutes = minutes;
-  saveState();
+  saveTimerState();
   updateTimerDisplay();
   setTimerStatus("就绪");
   queryElement("#timerStartButton").disabled = false;
+  queryElement("#timerPauseButton").disabled = true;
+}
+
+/* Restore a running or paused countdown after a reload. */
+function restoreTimerFromState() {
+  const saved = appState.settings.timer;
+  const fallbackMinutes = Number(appState.settings.timerMinutes) || 45;
+  const totalSeconds = saved && Number(saved.totalSeconds) > 0 ? Number(saved.totalSeconds) : fallbackMinutes * 60;
+  timerState.totalSeconds = totalSeconds;
+  timerState.remainingSeconds = saved && Number.isFinite(Number(saved.remainingSeconds))
+    ? Math.min(Math.max(0, Number(saved.remainingSeconds)), totalSeconds)
+    : totalSeconds;
+  queryElement("#timerMinutesInput").value = Math.max(1, Math.round(totalSeconds / 60));
+
+  if (saved && saved.isRunning && saved.endsAt) {
+    const remaining = Math.ceil((Number(saved.endsAt) - Date.now()) / 1000);
+    if (remaining > 0) {
+      timerState.remainingSeconds = Math.min(remaining, totalSeconds);
+      timerState.isRunning = true;
+      timerState.endsAt = Number(saved.endsAt);
+      queryElement("#timerStartButton").disabled = true;
+      queryElement("#timerPauseButton").disabled = false;
+      setTimerStatus("计时中（已恢复上次进度）");
+      timerState.intervalId = setInterval(tickTimer, 1000);
+    } else {
+      timerState.isRunning = false;
+      timerState.endsAt = null;
+      timerState.remainingSeconds = 0;
+      queryElement("#timerStartButton").disabled = false;
+      queryElement("#timerPauseButton").disabled = true;
+      setTimerStatus("上次计时已结束");
+      saveTimerState();
+    }
+  } else {
+    timerState.isRunning = false;
+    timerState.endsAt = null;
+    queryElement("#timerStartButton").disabled = false;
+    queryElement("#timerPauseButton").disabled = true;
+    if (timerState.remainingSeconds <= 0) setTimerStatus("上次计时已结束");
+    else setTimerStatus(timerState.remainingSeconds < timerState.totalSeconds ? "已暂停（已恢复上次进度）" : "就绪");
+  }
+  updateTimerDisplay();
 }
 
 queryElement("#timerStartButton").addEventListener("click", startTimer);
 queryElement("#timerPauseButton").addEventListener("click", pauseTimer);
 queryElement("#timerResetButton").addEventListener("click", resetTimer);
+queryElement("#timerMinutesInput").addEventListener("change", () => {
+  if (!timerState.isRunning) resetTimer();
+});
 queryAllElements(".timer-preset").forEach((button) => {
   button.addEventListener("click", () => {
     queryElement("#timerMinutesInput").value = button.dataset.minutes;
@@ -1277,8 +1666,69 @@ function refreshStorageSummary() {
 
 function exportAllDataAsJson() {
   const payload = { app: "minhu-station", version: 1, exportedAt: new Date().toISOString(), data: appState };
-  downloadTextFile("敏护站-备份-" + new Date().toISOString().slice(0, 10) + ".json", JSON.stringify(payload, null, 2), "application/json;charset=utf-8");
+  downloadTextFile("敏护站-备份-" + toLocalDateString(new Date()) + ".json", JSON.stringify(payload, null, 2), "application/json;charset=utf-8");
   showToast("已导出 JSON 备份");
+}
+
+/* Fictional sample records for previewing stats, charts and the report. */
+function loadDemoData() {
+  const hasExisting = appState.logs.length > 0 || Object.keys(appState.quizResults).length > 0;
+  openConfirmModal(
+    "载入示例数据？",
+    hasExisting
+      ? "当前已有问卷结果或日志。载入示例会覆盖现有本地记录，建议先导出 JSON 备份。"
+      : "将填入一组虚构的问卷结果与 12 条日志，用于快速预览统计、趋势图与就诊报告。",
+    "载入示例",
+    () => {
+      const demoEntries = [
+        { offset: -12, symptoms: ["颈肩酸痛"], triggers: ["长时间久坐"], note: "连续写代码 3 小时，起身时肩颈发紧。" },
+        { offset: -11, symptoms: ["头痛/偏头痛", "日间疲劳"], triggers: ["睡眠不足", "强光/长时间屏幕"], note: "前一晚只睡 5 小时，下午看屏幕久了太阳穴跳。" },
+        { offset: -10, symptoms: ["腹胀"], triggers: ["乳制品"], note: "午饭后喝拿铁，下午腹胀明显。" },
+        { offset: -8, symptoms: ["入睡困难"], triggers: ["压力/情绪波动", "熬夜"], note: "上线前焦虑，躺下 1 小时没睡着。" },
+        { offset: -7, symptoms: ["颈肩酸痛", "腰背酸痛"], triggers: ["长时间久坐", "运动缺乏"], note: "全天会议，几乎没起身。" },
+        { offset: -6, symptoms: ["头痛/偏头痛"], triggers: ["咖啡因", "漏餐/脱水"], note: "空腹喝了两杯咖啡。" },
+        { offset: -5, symptoms: ["腹胀", "腹泻"], triggers: ["辛辣油腻"], note: "加班点了重辣外卖。" },
+        { offset: -3, symptoms: ["夜间易醒"], triggers: ["酒精"], note: "应酬喝了一杯酒，凌晨醒了两次。" },
+        { offset: -2, symptoms: ["颈肩酸痛"], triggers: ["长时间久坐"], note: "赶版本，连续坐到晚上。" },
+        { offset: -1, symptoms: ["反酸/烧心"], triggers: ["辛辣油腻"], note: "夜宵吃得太晚。" },
+        { offset: 0, symptoms: ["日间疲劳"], triggers: ["睡眠不足"], note: "昨晚补觉不足，今天午后注意力差。" },
+        { offset: 0, symptoms: ["入睡困难"], triggers: ["强光/长时间屏幕"], note: "睡前刷手机到 1 点。" }
+      ];
+      appState.logs = demoEntries.map((entry, index) => {
+        const entryDate = addDays(new Date(), entry.offset);
+        return {
+          id: "demo-" + index + "-" + Date.now().toString(36),
+          date: toLocalDateString(entryDate),
+          symptoms: entry.symptoms,
+          triggers: entry.triggers,
+          note: entry.note,
+          createdAt: entryDate.toISOString()
+        };
+      });
+
+      const demoQuizScores = { spine: 12, sleep: 15, gut: 5 };
+      appState.quizResults = {};
+      Object.keys(demoQuizScores).forEach((quizId, index) => {
+        const quiz = QUESTIONNAIRES.find((item) => item.id === quizId);
+        if (!quiz) return;
+        appState.quizResults[quizId] = {
+          score: demoQuizScores[quizId],
+          maxScore: getQuizMaxScore(quiz),
+          dateLabel: formatDateTime(addDays(new Date(), -index).toISOString())
+        };
+      });
+
+      saveState();
+      renderQuestionnaires();
+      resetLogForm();
+      renderLogStats();
+      renderLogFilterChips();
+      renderLogList();
+      refreshStorageSummary();
+      goToTab("log");
+      showToast("已载入示例数据，可随时清空");
+    }
+  );
 }
 
 function handleImportFile(file) {
@@ -1333,6 +1783,8 @@ function handleImportFile(file) {
 queryElement("#refreshStorageButton").addEventListener("click", refreshStorageSummary);
 queryElement("#exportJsonButton").addEventListener("click", exportAllDataAsJson);
 queryElement("#exportMarkdownButton").addEventListener("click", exportLogsAsMarkdown);
+queryElement("#printReportButton").addEventListener("click", printVisitReport);
+queryElement("#loadDemoButton").addEventListener("click", loadDemoData);
 queryElement("#addLogButton").addEventListener("click", addLogEntry);
 queryElement("#importFileInput").addEventListener("change", (event) => {
   if (event.target.files && event.target.files[0]) handleImportFile(event.target.files[0]);
@@ -1370,14 +1822,8 @@ function initializeApp() {
   renderLogFilterChips();
   renderLogList();
   refreshStorageSummary();
-
-  /* Restore timer default length from settings. */
-  if (appState.settings.timerMinutes) {
-    queryElement("#timerMinutesInput").value = appState.settings.timerMinutes;
-    timerState.totalSeconds = appState.settings.timerMinutes * 60;
-    timerState.remainingSeconds = appState.settings.timerMinutes * 60;
-    updateTimerDisplay();
-  }
+  restoreTimerFromState();
+  activateTab(tabFromHash());
 
   setupCustomChipInput(queryElement("#symptomCustomInput"), queryElement("#symptomChips"), SYMPTOM_PRESETS);
   setupCustomChipInput(queryElement("#triggerCustomInput"), queryElement("#triggerChips"), TRIGGER_PRESETS);
