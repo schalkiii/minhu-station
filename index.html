@@ -1,0 +1,1389 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="敏护站 · 慢性敏感人群健康自查助手。隐私优先的纯前端静态工具：所有数据仅保存在浏览器本地，无登录、无埋点、无广告、零第三方请求。">
+<title>敏护站 · 慢性敏感人群健康自查助手</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%235b8a72'/%3E%3Cpath d='M9 17.5l4.5 4.5L23 11' stroke='%23fff' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<style>
+/* ============================================================
+   Minhu Station - hand-written CSS, zero external dependencies.
+   Design tokens: low-saturation blue-gray base + soft green accent.
+   Theme via CSS variables, switched by html[data-theme].
+   ============================================================ */
+:root {
+  --color-bg: #f4f6f5;
+  --color-surface: #ffffff;
+  --color-surface-soft: #eef1ef;
+  --color-border: #dde3df;
+  --color-text: #2d3a34;
+  --color-text-secondary: #5c6b62;
+  --color-text-faint: #8a978f;
+  --color-accent: #5b8a72;
+  --color-accent-soft: #e2efe7;
+  --color-accent-strong: #47755d;
+  --color-info: #5b7f9e;
+  --color-info-soft: #e3edf4;
+  --color-warn: #a8842c;
+  --color-warn-soft: #f6efdc;
+  --color-warn-border: #e5d5a8;
+  --color-danger: #b06a3b;
+  --color-danger-soft: #f7e9df;
+  --color-danger-border: #e8cdb6;
+  --color-safe: #4c8a63;
+  --color-safe-soft: #e3f0e8;
+  --color-safe-border: #c2ddcd;
+  --shadow-card: 0 1px 3px rgba(45, 58, 52, 0.07), 0 4px 14px rgba(45, 58, 52, 0.05);
+  --radius-card: 14px;
+  --radius-small: 9px;
+  --font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+}
+html[data-theme="dark"] {
+  --color-bg: #1b211e;
+  --color-surface: #242b27;
+  --color-surface-soft: #2c3430;
+  --color-border: #39433e;
+  --color-text: #dde5e0;
+  --color-text-secondary: #a7b3ac;
+  --color-text-faint: #75817a;
+  --color-accent: #7fb498;
+  --color-accent-soft: #2b3a33;
+  --color-accent-strong: #93c5ab;
+  --color-info: #7fa3bf;
+  --color-info-soft: #2a353d;
+  --color-warn: #cfa74d;
+  --color-warn-soft: #37311f;
+  --color-warn-border: #57491f;
+  --color-danger: #cf8b5b;
+  --color-danger-soft: #3a2c21;
+  --color-danger-border: #5f4429;
+  --color-safe: #7fbf97;
+  --color-safe-soft: #27352d;
+  --color-safe-border: #3b5044;
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.3), 0 4px 14px rgba(0, 0, 0, 0.2);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-stack);
+  background: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.65;
+  min-height: 100vh;
+  transition: background 0.25s ease, color 0.25s ease;
+}
+button { font-family: inherit; cursor: pointer; }
+input, select, textarea { font-family: inherit; font-size: 0.95rem; }
+
+/* ---------- Header & navigation ---------- */
+.site-header {
+  position: sticky; top: 0; z-index: 50;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  box-shadow: 0 1px 8px rgba(0,0,0,0.04);
+}
+.header-inner {
+  max-width: 1080px; margin: 0 auto; padding: 0 20px;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 58px; gap: 12px;
+}
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.05rem; color: var(--color-text); }
+.brand-mark {
+  width: 30px; height: 30px; border-radius: 8px;
+  background: var(--color-accent); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.85rem; font-weight: 700; flex-shrink: 0;
+}
+.brand-sub { font-size: 0.72rem; font-weight: 400; color: var(--color-text-faint); display: block; line-height: 1.2; }
+
+.main-nav { display: flex; gap: 4px; align-items: center; }
+.nav-tab {
+  border: none; background: transparent; color: var(--color-text-secondary);
+  padding: 8px 13px; border-radius: var(--radius-small);
+  font-size: 0.9rem; transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+.nav-tab:hover { background: var(--color-surface-soft); color: var(--color-text); }
+.nav-tab.active { background: var(--color-accent-soft); color: var(--color-accent-strong); font-weight: 600; }
+
+.header-actions { display: flex; align-items: center; gap: 8px; }
+.icon-button {
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 1px solid var(--color-border); background: var(--color-surface);
+  color: var(--color-text-secondary); font-size: 1rem;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.15s;
+}
+.icon-button:hover { background: var(--color-surface-soft); }
+
+.hamburger { display: none; }
+.mobile-nav {
+  display: none; flex-direction: column; gap: 2px;
+  padding: 8px 16px 14px; border-top: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+.mobile-nav.open { display: flex; }
+.mobile-nav .nav-tab { text-align: left; padding: 11px 13px; font-size: 0.98rem; border-radius: 10px; }
+
+@media (max-width: 860px) {
+  .main-nav { display: none; }
+  .hamburger { display: flex; }
+}
+
+/* ---------- Layout ---------- */
+main { max-width: 1080px; margin: 0 auto; padding: 26px 20px 60px; }
+.panel { display: none; animation: panel-in 0.25s ease; }
+.panel.active { display: block; }
+@keyframes panel-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+.section-title { font-size: 1.35rem; font-weight: 700; margin-bottom: 4px; }
+.section-sub { color: var(--color-text-secondary); font-size: 0.92rem; margin-bottom: 20px; }
+
+.card {
+  background: var(--color-surface); border: 1px solid var(--color-border);
+  border-radius: var(--radius-card); box-shadow: var(--shadow-card);
+  padding: 20px 22px; margin-bottom: 18px;
+}
+.card h3 { font-size: 1.05rem; margin-bottom: 8px; }
+.card p { font-size: 0.93rem; color: var(--color-text-secondary); }
+
+.disclaimer-banner {
+  display: flex; gap: 10px; align-items: flex-start;
+  background: var(--color-warn-soft); border: 1px solid var(--color-warn-border);
+  border-radius: var(--radius-card); padding: 13px 16px;
+  font-size: 0.88rem; color: var(--color-text); margin-bottom: 20px;
+}
+.disclaimer-banner .icon { flex-shrink: 0; font-size: 1.05rem; line-height: 1.5; }
+
+.privacy-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--color-accent-soft); color: var(--color-accent-strong);
+  border-radius: 999px; padding: 5px 14px; font-size: 0.82rem; font-weight: 600;
+  margin: 0 8px 8px 0;
+}
+
+.feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; margin: 18px 0; }
+.feature-item {
+  background: var(--color-surface); border: 1px solid var(--color-border);
+  border-radius: var(--radius-card); padding: 16px;
+}
+.feature-item .fi-icon { font-size: 1.4rem; margin-bottom: 8px; }
+.feature-item h4 { font-size: 0.97rem; margin-bottom: 4px; }
+.feature-item p { font-size: 0.85rem; }
+
+.audience-list { margin: 10px 0 0; padding-left: 0; list-style: none; }
+.audience-list li { padding: 4px 0; font-size: 0.92rem; color: var(--color-text-secondary); }
+.audience-list li::before { content: "· "; color: var(--color-accent); font-weight: 700; }
+
+/* ---------- Buttons & forms ---------- */
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  border: 1px solid var(--color-border); background: var(--color-surface);
+  color: var(--color-text); border-radius: var(--radius-small);
+  padding: 9px 16px; font-size: 0.9rem; transition: all 0.15s;
+}
+.btn:hover { background: var(--color-surface-soft); }
+.btn-primary { background: var(--color-accent); border-color: var(--color-accent); color: #fff; font-weight: 600; }
+.btn-primary:hover { background: var(--color-accent-strong); border-color: var(--color-accent-strong); }
+.btn-danger { color: var(--color-danger); border-color: var(--color-danger-border); }
+.btn-danger:hover { background: var(--color-danger-soft); }
+.btn-sm { padding: 5px 11px; font-size: 0.82rem; }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.field-label { display: block; font-size: 0.87rem; font-weight: 600; margin: 14px 0 6px; }
+.text-input, .select-input, .textarea-input {
+  width: 100%; background: var(--color-surface-soft); color: var(--color-text);
+  border: 1px solid var(--color-border); border-radius: var(--radius-small);
+  padding: 9px 12px; outline: none; transition: border 0.15s;
+}
+.text-input:focus, .select-input:focus, .textarea-input:focus { border-color: var(--color-accent); }
+.textarea-input { resize: vertical; min-height: 70px; }
+
+/* chip selector (multi choice) */
+.chip-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  border: 1px solid var(--color-border); background: var(--color-surface);
+  color: var(--color-text-secondary); border-radius: 999px;
+  padding: 5px 13px; font-size: 0.85rem; transition: all 0.12s; user-select: none;
+}
+.chip:hover { border-color: var(--color-accent); }
+.chip.selected { background: var(--color-accent-soft); border-color: var(--color-accent); color: var(--color-accent-strong); font-weight: 600; }
+.chip.filter-chip.selected { background: var(--color-info-soft); border-color: var(--color-info); color: var(--color-info); }
+
+/* ---------- Questionnaire ---------- */
+.quiz-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+.quiz-tag {
+  font-size: 0.75rem; font-weight: 600; color: var(--color-info);
+  background: var(--color-info-soft); padding: 3px 10px; border-radius: 999px;
+}
+.quiz-question { margin: 18px 0 8px; font-size: 0.95rem; font-weight: 600; }
+.option-row { display: flex; align-items: flex-start; gap: 9px; padding: 7px 4px; cursor: pointer; border-radius: 8px; }
+.option-row:hover { background: var(--color-surface-soft); }
+.option-row input { margin-top: 4px; accent-color: var(--color-accent); flex-shrink: 0; }
+.option-row span { font-size: 0.92rem; }
+
+.quiz-result { border-radius: var(--radius-card); padding: 18px 20px; margin-top: 16px; border: 1px solid; }
+.quiz-result.level-low { background: var(--color-safe-soft); border-color: var(--color-safe-border); }
+.quiz-result.level-medium { background: var(--color-warn-soft); border-color: var(--color-warn-border); }
+.quiz-result.level-high { background: var(--color-danger-soft); border-color: var(--color-danger-border); }
+.quiz-result .level-label { font-weight: 700; font-size: 1rem; margin-bottom: 4px; }
+.quiz-result.level-low .level-label { color: var(--color-safe); }
+.quiz-result.level-medium .level-label { color: var(--color-warn); }
+.quiz-result.level-high .level-label { color: var(--color-danger); }
+.quiz-result ul { margin: 8px 0 0 18px; }
+.quiz-result li { font-size: 0.9rem; margin-bottom: 4px; }
+.score-note { font-size: 0.82rem; color: var(--color-text-faint); margin-top: 10px; }
+
+/* ---------- Trigger log ---------- */
+.stats-bar { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 18px; }
+.stat-cell {
+  background: var(--color-surface); border: 1px solid var(--color-border);
+  border-radius: var(--radius-card); padding: 14px 16px;
+}
+.stat-cell .stat-value { font-size: 1.45rem; font-weight: 700; color: var(--color-accent-strong); }
+.stat-cell .stat-label { font-size: 0.8rem; color: var(--color-text-faint); }
+.stat-cell .stat-extra { font-size: 0.85rem; color: var(--color-text-secondary); margin-top: 2px; }
+
+.log-entry {
+  border: 1px solid var(--color-border); border-radius: var(--radius-card);
+  background: var(--color-surface); padding: 14px 18px; margin-bottom: 12px;
+}
+.log-entry-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.log-entry-date { font-weight: 700; font-size: 0.95rem; }
+.log-entry-actions { display: flex; gap: 6px; }
+.log-tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 2px; }
+.mini-tag {
+  font-size: 0.76rem; padding: 2px 10px; border-radius: 999px;
+  background: var(--color-surface-soft); color: var(--color-text-secondary);
+}
+.mini-tag.symptom { background: var(--color-info-soft); color: var(--color-info); }
+.mini-tag.trigger { background: var(--color-accent-soft); color: var(--color-accent-strong); }
+.log-note { font-size: 0.88rem; color: var(--color-text-secondary); margin-top: 6px; white-space: pre-wrap; }
+.empty-hint { text-align: center; color: var(--color-text-faint); font-size: 0.9rem; padding: 30px 0; }
+
+/* ---------- Knowledge base ---------- */
+.kb-group-title { font-size: 1.02rem; font-weight: 700; margin: 24px 0 10px; display: flex; align-items: center; gap: 8px; }
+.kb-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
+.kb-card {
+  background: var(--color-surface); border: 1px solid var(--color-border);
+  border-radius: var(--radius-card); padding: 17px 19px; box-shadow: var(--shadow-card);
+}
+.kb-card h4 { font-size: 0.98rem; margin-bottom: 8px; }
+.kb-card ul { margin-left: 17px; }
+.kb-card li { font-size: 0.88rem; color: var(--color-text-secondary); margin-bottom: 5px; }
+.kb-card.kb-medical { border-color: var(--color-danger-border); background: var(--color-danger-soft); }
+.kb-card.kb-medical li { color: var(--color-text); }
+
+/* ---------- Timer ---------- */
+.timer-wrap { text-align: center; padding: 30px 10px; }
+.timer-display {
+  font-size: 3.6rem; font-weight: 700; font-variant-numeric: tabular-nums;
+  letter-spacing: 2px; color: var(--color-accent-strong); margin: 18px 0 6px;
+}
+.timer-status { color: var(--color-text-faint); font-size: 0.9rem; min-height: 1.4em; }
+.timer-progress {
+  width: min(360px, 90%); height: 8px; border-radius: 999px;
+  background: var(--color-surface-soft); margin: 18px auto; overflow: hidden;
+}
+.timer-progress-fill { height: 100%; width: 0%; background: var(--color-accent); border-radius: 999px; transition: width 0.5s linear; }
+.timer-controls { display: flex; justify-content: center; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
+.timer-presets { display: flex; justify-content: center; gap: 8px; margin-top: 14px; flex-wrap: wrap; }
+
+/* ---------- Data management ---------- */
+.data-row {
+  display: flex; justify-content: space-between; align-items: center; gap: 14px;
+  padding: 15px 0; border-bottom: 1px dashed var(--color-border); flex-wrap: wrap;
+}
+.data-row:last-child { border-bottom: none; }
+.data-row h4 { font-size: 0.96rem; margin-bottom: 3px; }
+.data-row p { font-size: 0.84rem; }
+
+/* ---------- Modal & toast ---------- */
+.modal-backdrop {
+  position: fixed; inset: 0; background: rgba(15, 22, 19, 0.45);
+  display: none; align-items: center; justify-content: center; z-index: 100; padding: 20px;
+}
+.modal-backdrop.open { display: flex; }
+.modal {
+  background: var(--color-surface); border-radius: var(--radius-card);
+  max-width: 440px; width: 100%; padding: 24px; box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+}
+.modal h3 { margin-bottom: 10px; font-size: 1.05rem; }
+.modal .modal-body { font-size: 0.92rem; color: var(--color-text-secondary); margin-bottom: 20px; white-space: pre-wrap; }
+.modal-actions { display: flex; justify-content: flex-end; gap: 10px; }
+
+.toast {
+  position: fixed; bottom: 26px; left: 50%; transform: translateX(-50%) translateY(20px);
+  background: var(--color-text); color: var(--color-bg);
+  padding: 11px 22px; border-radius: 999px; font-size: 0.9rem;
+  opacity: 0; pointer-events: none; transition: all 0.3s ease; z-index: 120;
+  max-width: 86vw;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ---------- Footer ---------- */
+.site-footer {
+  border-top: 1px solid var(--color-border); margin-top: 30px;
+  padding: 24px 20px 34px; text-align: center;
+  color: var(--color-text-faint); font-size: 0.82rem;
+}
+.site-footer .footer-disclaimer { color: var(--color-text-secondary); max-width: 640px; margin: 0 auto 8px; }
+
+@media (max-width: 560px) {
+  main { padding: 20px 14px 50px; }
+  .card { padding: 16px; }
+  .timer-display { font-size: 2.8rem; }
+  .brand-sub { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ================= Header ================= -->
+<header class="site-header">
+  <div class="header-inner">
+    <div class="brand">
+      <div class="brand-mark">敏</div>
+      <div>敏护站<span class="brand-sub">慢性敏感人群健康自查助手</span></div>
+    </div>
+    <nav class="main-nav" id="desktopNav" aria-label="主导航">
+      <button class="nav-tab active" data-tab="home">首页</button>
+      <button class="nav-tab" data-tab="check">健康自查</button>
+      <button class="nav-tab" data-tab="log">诱因日志</button>
+      <button class="nav-tab" data-tab="knowledge">养护知识库</button>
+      <button class="nav-tab" data-tab="timer">休息计时器</button>
+      <button class="nav-tab" data-tab="data">数据管理</button>
+    </nav>
+    <div class="header-actions">
+      <button class="icon-button" id="themeToggle" title="切换深色 / 浅色模式" aria-label="切换主题">🌓</button>
+      <button class="icon-button hamburger" id="hamburgerBtn" title="菜单" aria-label="打开菜单">☰</button>
+    </div>
+  </div>
+  <nav class="mobile-nav" id="mobileNav" aria-label="移动端导航">
+    <button class="nav-tab active" data-tab="home">首页</button>
+    <button class="nav-tab" data-tab="check">健康自查</button>
+    <button class="nav-tab" data-tab="log">诱因日志</button>
+    <button class="nav-tab" data-tab="knowledge">养护知识库</button>
+    <button class="nav-tab" data-tab="timer">休息计时器</button>
+    <button class="nav-tab" data-tab="data">数据管理</button>
+  </nav>
+</header>
+
+<main>
+  <!-- ================= Panel: Home ================= -->
+  <section class="panel active" id="panel-home">
+    <div class="disclaimer-banner">
+      <span class="icon">⚠️</span>
+      <div><strong>重要声明：</strong>本工具仅用于健康科普、日常诱因记录与风险自查参考，<strong>不能替代执业医师的诊断与治疗</strong>。若您当前有明显不适或症状持续加重，请及时就医。</div>
+    </div>
+    <h1 class="section-title">你好，这里是敏护站</h1>
+    <p class="section-sub">一份安静、干净、只属于你自己的健康自我观测工作台。</p>
+
+    <div class="card">
+      <h3>🔒 隐私承诺</h3>
+      <p style="margin-top:6px">
+        <span class="privacy-badge">✓ 数据仅存于本机浏览器</span>
+        <span class="privacy-badge">✓ 无登录 · 无账号体系</span>
+        <span class="privacy-badge">✓ 无埋点 · 无广告</span>
+        <span class="privacy-badge">✓ 零第三方请求</span>
+      </p>
+      <p>本页面不连接任何后端服务器，不引用任何外部脚本与字体资源。你的问卷记录、诱因日志全部保存在当前浏览器的 LocalStorage 中，网络层面无任何数据外发。清除浏览器数据或更换设备前，请先在「数据管理」中导出备份。</p>
+    </div>
+
+    <div class="card">
+      <h3>🌱 项目定位</h3>
+      <p>长期伏案的开发者常常同时叠加多种慢性问题：脊柱与关节劳损、咖啡因诱发的不适、消化道敏感、睡眠失调。这类问题难以一次性根治，更依赖<strong>长期规律地记录诱因、规避触发因素、坚持日常养护</strong>。市面上的健康工具大多需要注册登录、上传个人健康数据，且缺少面向久坐办公场景与敏感体质的内容。</p>
+      <p style="margin-top:8px">敏护站定位为<strong>「自我观测助手」</strong>：不做诊断，只帮你把身体信号记录下来、看清楚，并保存为可以带给医生参考的台账。作者本人就是目标用户，项目开源免费，欢迎社区共同完善。</p>
+      <ul class="audience-list">
+        <li>长期伏案、久坐办公的开发者与文字工作者</li>
+        <li>受偏头痛、肠道敏感困扰，希望排查个人诱因的人</li>
+        <li>有脊柱慢性不适、希望建立日常养护习惯的人</li>
+        <li>在意个人健康数据隐私、不愿上传任何数据的人</li>
+      </ul>
+    </div>
+
+    <div class="feature-grid">
+      <div class="feature-item"><div class="fi-icon">🩺</div><h4>健康自查</h4><p>四套日常观察问卷：脊柱劳损、偏头痛诱因、消化道敏感、睡眠疲劳。即时出结果与分级养护建议。</p></div>
+      <div class="feature-item"><div class="fi-icon">📔</div><h4>诱因日志</h4><p>像记账一样记录症状与可疑诱因，支持筛选与 Markdown 导出，方便就诊时直接出示。</p></div>
+      <div class="feature-item"><div class="fi-icon">🌿</div><h4>养护知识库</h4><p>脊柱养护、避光控因、低敏饮食、护眼休息、就医提示清单，内容保守严谨、持续完善。</p></div>
+      <div class="feature-item"><div class="fi-icon">⏲️</div><h4>休息计时器</h4><p>自定义久坐提醒周期，到点页面提醒，帮打断长时间连续伏案。</p></div>
+      <div class="feature-item"><div class="fi-icon">📦</div><h4>数据管理</h4><p>一键导出 JSON 备份、导入恢复、清空本地记录，数据主权完全在你手里。</p></div>
+      <div class="feature-item"><div class="fi-icon">🌙</div><h4>深色模式</h4><p>跟随系统或手动切换，夜间记录不刺眼。</p></div>
+    </div>
+
+    <div class="card">
+      <h3>🧭 如何使用</h3>
+      <ul class="audience-list">
+        <li>第一步：花 3–5 分钟完成「健康自查」中与你相关的问卷，了解当前观察基线；</li>
+        <li>第二步：日常在「诱因日志」随手记录症状与可疑诱因，坚持 2–4 周形成台账；</li>
+        <li>第三步：翻看「养护知识库」，选择 1–2 项低成本的干预习惯开始尝试；</li>
+        <li>第四步：开启「休息计时器」，让定时起身成为默认动作；</li>
+        <li>第五步：就诊前用「导出 Markdown」整理台账，交给医生作参考。</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ================= Panel: Self check ================= -->
+  <section class="panel" id="panel-check">
+    <div class="disclaimer-banner">
+      <span class="icon">⚠️</span>
+      <div>问卷为<strong>日常观察与自我筛查参考</strong>，不构成任何医学诊断。结果分级仅表示「建议关注的程度」，出现橙色提示时请尽快就医评估。</div>
+    </div>
+    <h1 class="section-title">健康自查</h1>
+    <p class="section-sub">选择与你相关的问卷，如实作答即可。所有题目与结果都在本页本地完成计算，不会发送到任何地方。</p>
+    <div id="quizContainer"></div>
+  </section>
+
+  <!-- ================= Panel: Trigger log ================= -->
+  <section class="panel" id="panel-log">
+    <h1 class="section-title">诱因日志</h1>
+    <p class="section-sub">像记账一样记录身体信号。坚持记录是识别个人诱因最朴素也最有效的办法。</p>
+
+    <div class="stats-bar" id="logStatsBar"></div>
+
+    <div class="card">
+      <h3>✏️ 新增记录</h3>
+      <label class="field-label" for="logDateInput">日期</label>
+      <input type="date" class="text-input" id="logDateInput">
+      <label class="field-label">症状（可多选，也可自行输入）</label>
+      <div class="chip-row" id="symptomChips"></div>
+      <input type="text" class="text-input" id="symptomCustomInput" placeholder="自定义症状，回车添加" style="margin-top:8px">
+      <label class="field-label">可疑诱因（可多选，也可自行输入）</label>
+      <div class="chip-row" id="triggerChips"></div>
+      <input type="text" class="text-input" id="triggerCustomInput" placeholder="自定义诱因，回车添加" style="margin-top:8px">
+      <label class="field-label" for="logNoteInput">备注（可选）</label>
+      <textarea class="textarea-input" id="logNoteInput" placeholder="例如：症状出现时间、持续时间、当时在做什么……"></textarea>
+      <div style="margin-top:16px">
+        <button class="btn btn-primary" id="addLogButton">保存记录</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+        <h3 style="margin:0">📚 历史记录</h3>
+        <button class="btn btn-sm" id="exportMarkdownButton">导出 Markdown</button>
+      </div>
+      <label class="field-label">按标签筛选（选中任意标签即启用筛选，可叠加）</label>
+      <div class="chip-row" id="logFilterChips"></div>
+      <div id="logList" style="margin-top:16px"></div>
+    </div>
+  </section>
+
+  <!-- ================= Panel: Knowledge base ================= -->
+  <section class="panel" id="panel-knowledge">
+    <div class="disclaimer-banner">
+      <span class="icon">🌿</span>
+      <div>知识库内容为<strong>通用生活养护科普</strong>，力求保守严谨，不涉及诊疗方案。个体情况差异很大，开始新的饮食或运动计划前，如有疑虑请先咨询专业人士。</div>
+    </div>
+    <h1 class="section-title">养护知识库</h1>
+    <p class="section-sub">低成本、可长期坚持的日常养护参考，全部内容静态内置。</p>
+    <div id="knowledgeContainer"></div>
+  </section>
+
+  <!-- ================= Panel: Rest timer ================= -->
+  <section class="panel" id="panel-timer">
+    <h1 class="section-title">休息计时器</h1>
+    <p class="section-sub">给连续伏案设置一个硬性打断点。到点后本页面会弹窗提醒并闪烁标签页标题。</p>
+    <div class="card timer-wrap">
+      <label class="field-label" for="timerMinutesInput" style="text-align:left">自定义时长（分钟，1–180）</label>
+      <input type="number" class="text-input" id="timerMinutesInput" min="1" max="180" value="45" style="max-width:160px;margin:0 auto">
+      <div class="timer-display" id="timerDisplay">45:00</div>
+      <div class="timer-status" id="timerStatus">就绪</div>
+      <div class="timer-progress"><div class="timer-progress-fill" id="timerProgressFill"></div></div>
+      <div class="timer-controls">
+        <button class="btn btn-primary" id="timerStartButton">开始</button>
+        <button class="btn" id="timerPauseButton" disabled>暂停</button>
+        <button class="btn" id="timerResetButton">重置</button>
+      </div>
+      <div class="timer-presets">
+        <button class="btn btn-sm timer-preset" data-minutes="20">20 分钟</button>
+        <button class="btn btn-sm timer-preset" data-minutes="30">30 分钟</button>
+        <button class="btn btn-sm timer-preset" data-minutes="45">45 分钟</button>
+        <button class="btn btn-sm timer-preset" data-minutes="60">60 分钟</button>
+      </div>
+      <p class="score-note" style="margin-top:18px">提示：计时状态保存在页面内存中，刷新页面会重置。建议保持本页面打开。</p>
+    </div>
+  </section>
+
+  <!-- ================= Panel: Data management ================= -->
+  <section class="panel" id="panel-data">
+    <h1 class="section-title">数据管理</h1>
+    <p class="section-sub">你的数据完全属于你：随时带走、随时恢复、随时清空。</p>
+    <div class="card">
+      <div class="data-row">
+        <div><h4>📊 本地存储概况</h4><p id="storageSummaryText">统计中……</p></div>
+        <button class="btn btn-sm" id="refreshStorageButton">刷新</button>
+      </div>
+      <div class="data-row">
+        <div><h4>⬇️ 导出全部数据（JSON 备份）</h4><p>导出包含问卷结果与全部日志的 JSON 文件，可用于备份或迁移设备。</p></div>
+        <button class="btn" id="exportJsonButton">导出 JSON</button>
+      </div>
+      <div class="data-row">
+        <div><h4>⬆️ 导入备份（JSON）</h4><p>从备份文件恢复。可选择「合并」或「覆盖」当前数据。</p></div>
+        <label class="btn" style="cursor:pointer">选择文件<input type="file" id="importFileInput" accept=".json,application/json" style="display:none"></label>
+      </div>
+      <div class="data-row">
+        <div><h4>🗑️ 一键清空本地记录</h4><p>删除本机保存的全部问卷结果与诱因日志，<strong>不可恢复</strong>，请先导出备份。</p></div>
+        <button class="btn btn-danger" id="clearAllButton">清空全部记录</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <p class="footer-disclaimer">⚠️ 敏护站仅提供健康科普、诱因记录与风险自查参考，不能替代执业医师的诊断与治疗。如有不适，请及时就医。</p>
+  <p>敏护站 · 隐私优先的开源公益自查工具 · MIT License · 数据仅保存在你的浏览器中</p>
+</footer>
+
+<!-- ================= Modal ================= -->
+<div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true">
+  <div class="modal">
+    <h3 id="modalTitle">确认操作</h3>
+    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-actions">
+      <button class="btn" id="modalCancelButton">取消</button>
+      <button class="btn btn-danger" id="modalConfirmButton">确认</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toastElement"></div>
+
+<script>
+"use strict";
+/* ============================================================
+   Minhu Station - application script.
+   Pure vanilla JS, no frameworks, no network requests.
+   All persistent data lives in localStorage under one versioned key.
+   ============================================================ */
+
+/* ---------------- Static data ---------------- */
+
+/* Symptom and trigger preset tags for the trigger log. */
+const SYMPTOM_PRESETS = ["头痛/偏头痛", "颈肩酸痛", "腰背酸痛", "腹胀", "腹痛", "腹泻", "便秘", "反酸/烧心", "入睡困难", "夜间易醒", "日间疲劳", "情绪低落"];
+const TRIGGER_PRESETS = ["咖啡因", "睡眠不足", "漏餐/脱水", "辛辣油腻", "乳制品", "豆类/产气食物", "酒精", "压力/情绪波动", "长时间久坐", "强光/长时间屏幕", "天气变化", "运动缺乏", "熬夜"];
+
+/* Question banks. Every entry is intentionally phrased as daily
+   observation, never as diagnostic language. Single-choice options
+   carry observation-frequency weights (0-3); multi-choice triggers
+   count 1 point each when selected. */
+const QUESTIONNAIRES = [
+  {
+    id: "spine",
+    tag: "脊柱 / 关节",
+    title: "脊柱与关节劳损日常观察",
+    intro: "面向长期伏案人群的日常观察问卷，重点关注久坐负荷与晨起僵硬等信号。",
+    questions: [
+      { type: "single", text: "平均每个工作日坐着的时间大约是？", options: [["6 小时以内", 0], ["6–8 小时", 1], ["8–10 小时", 2], ["10 小时以上", 3]] },
+      { type: "single", text: "最长的一次连续久坐（不起身活动）通常多久？", options: [["1 小时以内", 0], ["1–2 小时", 1], ["2–3 小时", 2], ["3 小时以上", 3]] },
+      { type: "single", text: "早晨起床时是否感到腰背僵硬？", options: [["基本没有", 0], ["偶尔有，活动后很快缓解", 1], ["经常有，活动 30 分钟内缓解", 2], ["经常有，持续超过 30–60 分钟", 3]] },
+      { type: "single", text: "过去一个月，颈肩或腰背不适出现的频率？", options: [["几乎没有", 0], ["偶尔（每月几次）", 1], ["每周都有", 2], ["几乎每天", 3]] },
+      { type: "single", text: "是否因背部或关节不适在夜间醒来？", options: [["从未", 0], ["极少（一两次）", 1], ["偶尔（每月数次）", 2], ["经常", 3]] },
+      { type: "single", text: "每周专门运动（快走、游泳、拉伸等）的次数？", options: [["4 次及以上", 0], ["2–3 次", 1], ["1 次左右", 2], ["几乎没有", 3]] },
+      { type: "multi", text: "以下情形哪些符合你的日常？（可多选）", options: [["长时间低头看手机", 1], ["椅子缺乏腰部支撑", 1], ["屏幕高度明显偏离视线", 1], ["经常跷二郎腿或歪着坐", 1], ["提重物后腰背不适明显加重", 1]] }
+    ],
+    advice: {
+      low: ["继续保持规律起身与适量运动即是最好的养护。", "可参考知识库中的工位人体工学清单，进一步减少静态负荷。"],
+      medium: ["建议把「每 30–45 分钟起身活动 2–3 分钟」设为默认习惯。", "检查工位：屏幕上缘与视线平齐、肘部约 90°、腰部有支撑。", "逐步加入规律的中低强度运动（快走、游泳、核心练习）。", "若晨起僵硬持续加重或夜间痛醒变得频繁，建议就医评估。"],
+      high: ["建议尽快到骨科、风湿免疫科或康复科就诊评估，并携带你的诱因日志。", "就诊前可记录：僵硬的具体时段与持续时长、夜间痛醒频率、活动后是否缓解。", "在此之前避免自行高强度锻炼或按摩按压，防止加重。"]
+    }
+  },
+  {
+    id: "migraine",
+    tag: "偏头痛",
+    title: "偏头痛诱因日常筛查",
+    intro: "围绕咖啡因、睡眠、光照、压力等常见触发因素的观察问卷，帮助你定位个人诱因。",
+    questions: [
+      { type: "single", text: "过去三个月，明显头痛（尤其单侧搏动性）的发作频率？", options: [["很少或没有", 0], ["每月 1–3 次", 1], ["每周约 1 次", 2], ["每周多次", 3]] },
+      { type: "single", text: "头痛是否明显影响工作、阅读或需要卧床？", options: [["从不", 0], ["偶尔影响", 1], ["经常影响", 2], ["每次都严重影响", 3]] },
+      { type: "single", text: "咖啡因（咖啡、浓茶、可乐、能量饮料）摄入情况？", options: [["很少，且时间规律", 0], ["每天 1 份左右", 1], ["每天 2–3 份或时段不固定", 2], ["大量摄入或忽多忽少", 3]] },
+      { type: "single", text: "工作日与周末的入睡 / 起床时间差？", options: [["1 小时以内", 0], ["1–2 小时", 1], ["2–3 小时", 2], ["3 小时以上", 3]] },
+      { type: "single", text: "强光、长时间屏幕或嘈杂环境后，头痛是否诱发或加重？", options: [["没有这种规律", 0], ["偶尔", 1], ["经常", 2], ["几乎必然", 3]] },
+      { type: "single", text: "发作前是否出现过视觉异常（闪光、暗点、锯齿图案）或其他一过性神经症状？", options: [["从未", 0], ["出现过 1 次", 1], ["偶尔出现", 2], ["经常出现", 3]] },
+      { type: "multi", text: "以下情形中，哪些常与你的头痛相关？（可多选）", options: [["睡眠不足或睡过多", 1], ["漏餐或饮水少", 1], ["压力山大或压力突然释放", 1], ["天气 / 气压变化", 1], ["饮酒（尤其红酒）", 1], ["强光 / 噪音 / 气味刺激", 1], ["女性生理周期相关", 1], ["频繁自行服用止痛药", 1]] }
+    ],
+    advice: {
+      low: ["当前观察不到明显诱因聚集，继续保持规律作息即可。", "仍建议在发作时随手记一条诱因日志，积累个人规律。"],
+      medium: ["优先做两件事：固定睡眠时间窗；咖啡因定量并固定时段。", "头痛发作时到安静、避光的环境休息，减少屏幕使用。", "把每次发作记入诱因日志，2–4 周后回看是否存在稳定诱因。", "注意：频繁自行服用止痛药可能反而诱发药物过量性头痛，用药请遵医嘱。"],
+      high: ["建议到神经内科就诊评估，尤其是发作频繁、明显影响生活时。", "若出现过视觉先兆或一过性神经症状，请在就诊时重点描述。", "就诊前整理诱因日志（可导出 Markdown），医生会需要发作频率与诱因记录。", "未确诊前不建议自行长期服用任何止痛药物。"]
+    }
+  },
+  {
+    id: "gut",
+    tag: "消化道",
+    title: "消化道敏感日常观察",
+    intro: "面向肠道敏感人群（如肠易激样不适）的日常观察问卷，聚焦症状频率与饮食关联。",
+    questions: [
+      { type: "single", text: "腹胀、腹痛、腹泻或便秘等不适的出现频率？", options: [["很少", 0], ["偶尔（每月几次）", 1], ["每周都有", 2], ["几乎每天", 3]] },
+      { type: "single", text: "进食特定食物后，症状是否更容易出现？", options: [["没有发现这种关联", 0], ["偶尔", 1], ["经常", 2], ["几乎每次", 3]] },
+      { type: "single", text: "三餐的规律程度？", options: [["基本定时定量", 0], ["偶尔不规律", 1], ["经常推迟或跳过", 2], ["非常不规律", 3]] },
+      { type: "single", text: "症状与压力、情绪波动的关联？", options: [["没有关联", 0], ["偶尔相关", 1], ["经常在紧张时段加重", 2], ["情绪波动几乎必然引发", 3]] },
+      { type: "single", text: "近几个月排便习惯（频率、性状）是否出现持续改变？", options: [["没有改变", 0], ["短暂改变后恢复", 1], ["有改变但趋势稳定", 2], ["持续改变且仍在变化", 3]] },
+      { type: "multi", text: "以下哪些食物 / 情形你怀疑与不适有关？（可多选）", options: [["辛辣刺激", 1], ["高油腻外卖", 1], ["乳制品", 1], ["豆类 / 产气食物", 1], ["酒精", 1], ["冰饮 / 冷食", 1], ["进食过快", 1], ["久坐不动", 1]] }
+    ],
+    advice: {
+      low: ["当前观察不到明显问题，保持规律三餐即可。", "有可疑食物时可少量尝试并记录，避免盲目长期忌口。"],
+      medium: ["尝试「记录—排除—复核」：高度怀疑的食物先减少 2 周，观察变化再决定是否长期回避。", "规律三餐、细嚼慢咽、减少深夜进食，是成本最低的干预。", "肠道敏感与压力高度相关，规律睡眠与运动常有间接帮助。", "不建议长期大规模忌口，营养失衡会带来新的问题。"],
+      high: ["排便习惯持续改变、伴随体重下降、黑便或血便、夜间痛醒等情况时，请尽快到消化内科就诊。", "就诊前整理好饮食与症状日志（可导出 Markdown），会显著提高就诊效率。", "未明确原因前，不建议自行长期使用调节肠道药物或益生菌方案。"]
+    }
+  },
+  {
+    id: "sleep",
+    tag: "睡眠",
+    title: "睡眠质量与疲劳度观察",
+    intro: "聚焦入睡、夜醒、作息漂移与日间功能的日常观察问卷。",
+    questions: [
+      { type: "single", text: "通常多久能入睡？", options: [["30 分钟以内", 0], ["30–60 分钟", 1], ["1–2 小时", 2], ["超过 2 小时或很不确定", 3]] },
+      { type: "single", text: "夜间醒来的次数？", options: [["基本不醒", 0], ["1 次", 1], ["2 次", 2], ["3 次及以上", 3]] },
+      { type: "single", text: "工作日与周末的作息时间差？", options: [["1 小时以内", 0], ["1–2 小时", 1], ["2–3 小时", 2], ["3 小时以上", 3]] },
+      { type: "single", text: "睡前一小时的屏幕使用（手机 / 电脑）？", options: [["很少，睡前基本离屏", 0], ["偶尔使用", 1], ["几乎每天", 2], ["一直用到睡着", 3]] },
+      { type: "single", text: "白天困倦、注意力难集中的频率？", options: [["很少", 0], ["偶尔", 1], ["每周数次", 2], ["几乎每天", 3]] },
+      { type: "single", text: "下午之后摄入咖啡因的情况？", options: [["基本不摄入", 0], ["偶尔", 1], ["经常", 2], ["每天下午都靠它续命", 3]] },
+      { type: "multi", text: "以下情形哪些符合你的日常？（可多选）", options: [["卧室有明显光线或噪音", 1], ["睡前进行激烈讨论或游戏", 1], ["作息随项目 / 班次大幅波动", 1], ["睡前饮酒助眠", 1], ["被反映打鼾严重或呼吸暂停", 1]] }
+    ],
+    advice: {
+      low: ["睡眠状态观察良好，维持现有节律即可。"],
+      medium: ["优先固定起床时间（比固定入睡时间更有效），包括周末。", "睡前 1 小时离屏，把卧室调整为暗、静、稍凉的环境。", "下午 2 点后控制咖啡因；睡前避免饮酒助眠。", "白天困倦明显时，20 分钟左右的午休比咖啡因更可靠。"],
+      high: ["长期失眠叠加日间功能受损时，建议就诊评估，睡眠专科或神经内科均可。", "若被观察到打鼾严重、夜间呼吸暂停或白天不可抗拒的嗜睡，请尽快就医排查睡眠呼吸问题。", "不建议自行长期服用助眠药物，处方药物请遵医嘱。"]
+    }
+  }
+];
+
+/* Knowledge base cards, grouped for display. */
+const KNOWLEDGE_GROUPS = [
+  {
+    name: "🪑 脊柱养护",
+    cards: [
+      { title: "工位人体工学速查", points: ["屏幕上缘与视线平齐，距离约一臂； laptop 用户建议加支架与外接键盘。", "肘部约 90° 自然下垂，手腕保持平直。", "腰部有支撑（腰靠或卷起的毛巾即可），双脚踩实地面。", "屏幕太暗或太小会不自觉前倾，适当调大系统缩放比。"] },
+      { title: "打断久坐的最小方案", points: ["每 30–45 分钟起身 2–3 分钟，接水、走动都算。", "把「起身」和既有动作绑定：每次保存代码、每次接水时顺便活动。", "电话与语音会议时站着说。", "与其追求一次大运动量，不如先保证每天多次的微活动。"] },
+      { title: "日常养护与运动", points: ["规律的中低强度有氧（快走、游泳）对脊柱友好。", "核心力量练习能分担脊柱负荷，建议循序渐进。", "伸展以「轻微牵拉感、无痛」为度，出现放射痛立即停止。", "提重物时贴近身体、屈膝下蹲，避免弯腰硬拉。"] }
+    ]
+  },
+  {
+    name: "🌗 偏头痛避光控因",
+    cards: [
+      { title: "识别个人诱因", points: ["常见诱因：睡眠波动、咖啡因、漏餐脱水、压力、天气变化、强光噪音。", "诱因因人而异，唯一可靠的方法是持续记录 2–4 周再回看。", "一次接触诱因不一定发作，通常是多因素叠加。"] },
+      { title: "发作时的低成本应对", points: ["到安静、避光的环境休息，冷敷额部对部分人有帮助。", "减少屏幕与声音刺激，小口补水。", "记录发作时间、持续时长与当天可疑诱因。"] },
+      { title: "两个重要提醒", points: ["频繁自行服用止痛药可能诱发「药物过量性头痛」，用药请遵医嘱。", "若出现视觉先兆（闪光、暗点）或发作模式明显改变，建议神经内科就诊。"] }
+    ]
+  },
+  {
+    name: "🍚 低敏饮食提示",
+    cards: [
+      { title: "记录优先于忌口", points: ["先记录 2–4 周饮食与症状，找出高度可疑的食物。", "「排除—复核」法：可疑食物减少 2 周，观察变化，再少量恢复验证。", "避免仅凭单次不适就永久忌口一整类食物。"] },
+      { title: "常见敏感食物参考", points: ["个体差异大：乳制品、豆类、辛辣、高脂、酒精、冰饮是常见报告对象。", "低 FODMAP 饮食是针对肠易激样不适的循证方案，但结构复杂，建议在专业人士指导下短期尝试。", "规律三餐、细嚼慢咽、避免深夜大量进食，几乎对所有人有益。"] },
+      { title: "什么情况应就医", points: ["排便习惯持续改变超过数周。", "出现体重明显下降、黑便、血便、夜间痛醒。", "症状明显影响进食与日常生活。"] }
+    ]
+  },
+  {
+    name: "👀 护眼与屏幕休息",
+    cards: [
+      { title: "20-20-20 法则", points: ["每 20 分钟，看 20 英尺（约 6 米）外，持续 20 秒。", "有意识完整眨眼，减少干眼不适。", "屏幕亮度与环境光接近，夜间开启深色模式与暖色温。"] },
+      { title: "环境小改造", points: ["屏幕位置略低于视线，减少睁眼幅度。", "避免头顶强光直射屏幕造成反光。", "干涩明显时可用人工泪液，长期使用前建议咨询医师。"] }
+    ]
+  },
+  {
+    name: "🏥 就医提示清单",
+    cards: [
+      { title: "建议尽快就医评估的情形", medical: true, points: ["突发剧烈头痛，或头痛模式与以往明显不同。", "头痛伴随发热、颈部僵硬、意识或言语改变。", "肢体麻木无力、视物成双、行走不稳。", "腰背痛伴下肢无力、麻木，或大小便功能异常。", "消化道症状持续数周不缓解，伴体重下降、黑便或血便。", "长期失眠叠加显著情绪低落或兴趣减退。", "本清单并不完整，任何让你不安的持续变化，都值得交给专业医生判断。"] }
+    ]
+  }
+];
+
+/* ---------------- Persistent state ---------------- */
+
+const STORAGE_KEY = "minhu-station-data-v1";
+
+function createDefaultState() {
+  return {
+    version: 1,
+    settings: { themeMode: null, timerMinutes: 45 }, /* themeMode: null = follow system */
+    quizResults: {}, /* keyed by questionnaire id */
+    logs: []         /* trigger log entries */
+  };
+}
+
+function loadState() {
+  try {
+    const raw = window.localStorage.getItem(STORAGE_KEY);
+    if (!raw) return createDefaultState();
+    const parsed = JSON.parse(raw);
+    const fallback = createDefaultState();
+    return {
+      version: 1,
+      settings: Object.assign(fallback.settings, parsed.settings || {}),
+      quizResults: parsed.quizResults || {},
+      logs: Array.isArray(parsed.logs) ? parsed.logs : []
+    };
+  } catch (error) {
+    console.warn("Failed to load state, using defaults.", error);
+    return createDefaultState();
+  }
+}
+
+let appState = loadState();
+
+function saveState() {
+  try {
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+    return true;
+  } catch (error) {
+    showToast("保存失败：浏览器本地存储不可用（可能处于隐私模式）");
+    return false;
+  }
+}
+
+/* ---------------- Small utilities ---------------- */
+
+function queryElement(selector) { return document.querySelector(selector); }
+function queryAllElements(selector) { return Array.from(document.querySelectorAll(selector)); }
+
+function generateUniqueId() {
+  return Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 8);
+}
+
+function formatDateTime(isoString) {
+  const date = new Date(isoString);
+  const pad = (n) => String(n).padStart(2, "0");
+  return date.getFullYear() + "-" + pad(date.getMonth() + 1) + "-" + pad(date.getDate()) + " " + pad(date.getHours()) + ":" + pad(date.getMinutes());
+}
+
+function escapeHtml(text) {
+  const div = document.createElement("div");
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+let toastTimer = null;
+function showToast(message) {
+  const toast = queryElement("#toastElement");
+  toast.textContent = message;
+  toast.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove("show"), 2600);
+}
+
+/* Modal helper. onConfirm is invoked only when user presses confirm. */
+let modalConfirmHandler = null;
+function openConfirmModal(title, bodyText, confirmLabel, onConfirm) {
+  queryElement("#modalTitle").textContent = title;
+  queryElement("#modalBody").textContent = bodyText;
+  queryElement("#modalConfirmButton").textContent = confirmLabel || "确认";
+  modalConfirmHandler = onConfirm;
+  queryElement("#modalBackdrop").classList.add("open");
+}
+function closeConfirmModal() {
+  queryElement("#modalBackdrop").classList.remove("open");
+  modalConfirmHandler = null;
+}
+queryElement("#modalCancelButton").addEventListener("click", closeConfirmModal);
+queryElement("#modalBackdrop").addEventListener("click", (event) => {
+  if (event.target === queryElement("#modalBackdrop")) closeConfirmModal();
+});
+queryElement("#modalConfirmButton").addEventListener("click", () => {
+  const handler = modalConfirmHandler;
+  closeConfirmModal();
+  if (handler) handler();
+});
+
+function downloadTextFile(fileName, textContent, mimeType) {
+  const blob = new Blob([textContent], { type: mimeType || "text/plain;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const anchor = document.createElement("a");
+  anchor.href = url;
+  anchor.download = fileName;
+  document.body.appendChild(anchor);
+  anchor.click();
+  anchor.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+/* ---------------- Navigation ---------------- */
+
+function switchTab(tabName) {
+  queryAllElements(".nav-tab").forEach((button) => {
+    button.classList.toggle("active", button.dataset.tab === tabName);
+  });
+  queryAllElements(".panel").forEach((panel) => {
+    panel.classList.toggle("active", panel.id === "panel-" + tabName);
+  });
+  queryElement("#mobileNav").classList.remove("open");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+queryAllElements(".nav-tab").forEach((button) => {
+  button.addEventListener("click", () => switchTab(button.dataset.tab));
+});
+queryElement("#hamburgerBtn").addEventListener("click", () => {
+  queryElement("#mobileNav").classList.toggle("open");
+});
+
+/* ---------------- Theme ---------------- */
+
+function applyTheme() {
+  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+  const mode = appState.settings.themeMode || (prefersDark ? "dark" : "light");
+  document.documentElement.setAttribute("data-theme", mode);
+}
+queryElement("#themeToggle").addEventListener("click", () => {
+  const current = document.documentElement.getAttribute("data-theme");
+  appState.settings.themeMode = current === "dark" ? "light" : "dark";
+  saveState();
+  applyTheme();
+});
+window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
+  if (!appState.settings.themeMode) applyTheme();
+});
+
+/* ---------------- Questionnaire rendering & scoring ---------------- */
+
+function buildQuizResultLevels(maxScore) {
+  return { lowMax: Math.round(maxScore * 0.25), mediumMax: Math.round(maxScore * 0.6) };
+}
+
+function renderQuestionnaires() {
+  const container = queryElement("#quizContainer");
+  container.innerHTML = "";
+  QUESTIONNAIRES.forEach((quiz) => {
+    const card = document.createElement("div");
+    card.className = "card";
+    const maxScore = quiz.questions.reduce((total, question) => {
+      const questionMax = question.type === "single"
+        ? Math.max(...question.options.map((option) => option[1]))
+        : question.options.reduce((sum, option) => sum + option[1], 0);
+      return total + questionMax;
+    }, 0);
+
+    card.innerHTML =
+      '<div class="quiz-meta"><span class="quiz-tag">' + escapeHtml(quiz.tag) + '</span></div>' +
+      '<h3>' + escapeHtml(quiz.title) + '</h3>' +
+      '<p>' + escapeHtml(quiz.intro) + '</p>' +
+      '<div class="quiz-questions" data-quiz-id="' + quiz.id + '">' +
+      quiz.questions.map((question, questionIndex) => {
+        const rows = question.options.map((option, optionIndex) => {
+          const inputType = question.type === "single" ? "radio" : "checkbox";
+          const inputName = quiz.id + "-q" + questionIndex;
+          return '<label class="option-row"><input type="' + inputType + '" name="' + inputName + '" value="' + optionIndex + '"><span>' + escapeHtml(option[0]) + '</span></label>';
+        }).join("");
+        return '<div class="quiz-question">' + escapeHtml((questionIndex + 1) + ". " + question.text) + '</div>' +
+               (question.type === "multi" ? '<div class="score-note" style="margin:0 0 4px">多选题</div>' : "") + rows;
+      }).join("") +
+      '</div>' +
+      '<div style="margin-top:18px;display:flex;gap:10px;flex-wrap:wrap">' +
+      '<button class="btn btn-primary quiz-submit-button" data-quiz-id="' + quiz.id + '">查看结果</button>' +
+      '<button class="btn quiz-reset-button" data-quiz-id="' + quiz.id + '">重填</button>' +
+      '</div>' +
+      '<div class="quiz-result-slot" data-quiz-id="' + quiz.id + '"></div>' +
+      '<p class="score-note">本问卷满分 ' + maxScore + ' 分，仅反映日常观察到的负荷程度，不构成诊断。</p>';
+
+    /* Restore previous result summary if present. */
+    const previous = appState.quizResults[quiz.id];
+    if (previous) {
+      const slot = card.querySelector(".quiz-result-slot");
+      slot.innerHTML = buildResultHtml(quiz, previous.score, previous.maxScore, previous.dateLabel);
+    }
+    container.appendChild(card);
+  });
+
+  queryAllElements(".quiz-submit-button").forEach((button) => {
+    button.addEventListener("click", () => submitQuiz(button.dataset.quizId));
+  });
+  queryAllElements(".quiz-reset-button").forEach((button) => {
+    button.addEventListener("click", () => {
+      const quizElement = queryElement('.quiz-questions[data-quiz-id="' + button.dataset.quizId + '"]');
+      queryAllElementsIn(quizElement, "input").forEach((input) => { input.checked = false; });
+      queryElement('.quiz-result-slot[data-quiz-id="' + button.dataset.quizId + '"]').innerHTML = "";
+    });
+  });
+}
+
+function queryAllIn(rootElement, selector) { return Array.from(rootElement.querySelectorAll(selector)); }
+
+function buildResultHtml(quiz, score, maxScore, dateLabel) {
+  const levels = buildQuizResultLevels(maxScore);
+  let levelKey, levelLabel, levelText;
+  if (score <= levels.lowMax) {
+    levelKey = "low"; levelLabel = "日常观察"; levelText = "当前观察到的负荷较低，属于普通人群常见范围。";
+  } else if (score <= levels.mediumMax) {
+    levelKey = "medium"; levelLabel = "建议多加留意"; levelText = "观察到中等程度的负荷信号，建议开始有针对性的日常养护。";
+  } else {
+    levelKey = "high"; levelLabel = "建议尽快就医评估"; levelText = "观察到的信号较多或较重，建议交给专业医生评估。";
+  }
+  const adviceItems = quiz.advice[levelKey].map((item) => "<li>" + escapeHtml(item) + "</li>").join("");
+  return '<div class="quiz-result level-' + levelKey + '">' +
+    '<div class="level-label">结果：' + levelLabel + '</div>' +
+    '<div style="font-size:0.9rem">' + escapeHtml(levelText) + '</div>' +
+    '<ul>' + adviceItems + '</ul>' +
+    '<div class="score-note">得分 ' + score + ' / ' + maxScore + ' · 计算于 ' + escapeHtml(dateLabel) + ' · 本结果保存在本机，不构成诊断</div>' +
+    '</div>';
+}
+
+function submitQuiz(quizId) {
+  const quiz = QUESTIONNAIRES.find((item) => item.id === quizId);
+  const quizElement = queryElement('.quiz-questions[data-quiz-id="' + quizId + '"]');
+  let score = 0;
+  let answeredAll = true;
+
+  quiz.questions.forEach((question, questionIndex) => {
+    const inputs = queryAllIn(quizElement, 'input[name="' + quizId + '-q' + questionIndex + '"]');
+    const checked = inputs.filter((input) => input.checked);
+    if (question.type === "single") {
+      if (checked.length === 0) answeredAll = false;
+      if (checked.length === 1) score += question.options[Number(checked[0].value)][1];
+    } else {
+      checked.forEach((input) => { score += question.options[Number(input.value)][1]; });
+    }
+  });
+
+  if (!answeredAll) {
+    showToast("还有单选题未作答，请完成全部题目");
+    return;
+  }
+
+  const maxScore = quiz.questions.reduce((total, question) => {
+    const questionMax = question.type === "single"
+      ? Math.max(...question.options.map((option) => option[1]))
+      : question.options.reduce((sum, option) => sum + option[1], 0);
+    return total + questionMax;
+  }, 0);
+  const dateLabel = formatDateTime(new Date().toISOString());
+
+  appState.quizResults[quizId] = { score: score, maxScore: maxScore, dateLabel: dateLabel };
+  saveState();
+  queryElement('.quiz-result-slot[data-quiz-id="' + quizId + '"]').innerHTML = buildResultHtml(quiz, score, maxScore, dateLabel);
+  showToast("结果已保存到本机");
+}
+
+/* ---------------- Trigger log ---------------- */
+
+function collectSelectedChips(chipRowElement) {
+  return queryAllIn(chipRowElement, ".chip.selected").map((chip) => chip.dataset.value);
+}
+
+function renderChipRow(chipRowElement, presets, selectedValues, filterMode) {
+  chipRowElement.innerHTML = "";
+  presets.forEach((preset) => {
+    const chip = document.createElement("button");
+    chip.type = "button";
+    chip.className = "chip" + (filterMode ? " filter-chip" : "") + (selectedValues.includes(preset) ? " selected" : "");
+    chip.dataset.value = preset;
+    chip.textContent = preset;
+    chip.addEventListener("click", () => chip.classList.toggle("selected"));
+    chipRowElement.appendChild(chip);
+  });
+}
+
+function setupCustomChipInput(inputElement, chipRowElement, presets) {
+  inputElement.addEventListener("keydown", (event) => {
+    if (event.key !== "Enter") return;
+    event.preventDefault();
+    const value = inputElement.value.trim();
+    if (!value) return;
+    if (presets.includes(value) || collectSelectedChips(chipRowElement).includes(value)) {
+      showToast("该标签已存在");
+      return;
+    }
+    const chip = document.createElement("button");
+    chip.type = "button";
+    chip.className = "chip selected";
+    chip.dataset.value = value;
+    chip.textContent = value;
+    chip.addEventListener("click", () => chip.classList.toggle("selected"));
+    chipRowElement.appendChild(chip);
+    inputElement.value = "";
+  });
+}
+
+const activeLogFilters = new Set();
+
+function renderLogFilterChips() {
+  const row = queryElement("#logFilterChips");
+  const knownTags = Array.from(new Set([].concat(
+    SYMPTOM_PRESETS, TRIGGER_PRESETS,
+    ...appState.logs.map((log) => [].concat(log.symptoms, log.triggers))
+  ))).sort((a, b) => a.localeCompare(b, "zh-CN"));
+  row.innerHTML = "";
+  knownTags.forEach((tag) => {
+    const chip = document.createElement("button");
+    chip.type = "button";
+    chip.className = "chip filter-chip" + (activeLogFilters.has(tag) ? " selected" : "");
+    chip.textContent = tag;
+    chip.addEventListener("click", () => {
+      if (activeLogFilters.has(tag)) activeLogFilters.delete(tag); else activeLogFilters.add(tag);
+      renderLogFilterChips();
+      renderLogList();
+    });
+    row.appendChild(chip);
+  });
+}
+
+function renderLogStats() {
+  const bar = queryElement("#logStatsBar");
+  const total = appState.logs.length;
+  const weekAgo = new Date(Date.now() - 7 * 24 * 3600 * 1000).toISOString().slice(0, 10);
+  const recent = appState.logs.filter((log) => log.date >= weekAgo).length;
+  const triggerCount = {};
+  appState.logs.forEach((log) => log.triggers.forEach((tag) => { triggerCount[tag] = (triggerCount[tag] || 0) + 1; }));
+  const topTriggers = Object.entries(triggerCount).sort((a, b) => b[1] - a[1]).slice(0, 5);
+
+  bar.innerHTML =
+    '<div class="stat-cell"><div class="stat-value">' + total + '</div><div class="stat-label">累计记录（条）</div></div>' +
+    '<div class="stat-cell"><div class="stat-value">' + recent + '</div><div class="stat-label">近 7 天记录</div></div>' +
+    '<div class="stat-cell"><div class="stat-value" style="font-size:0.95rem;line-height:2.2">' + (topTriggers.length
+      ? escapeHtml(topTriggers.map(([tag, count]) => tag + " ×" + count).join("　"))
+      : "暂无") + '</div><div class="stat-label">高频可疑诱因（仅频率统计，不构成因果结论）</div></div>';
+}
+
+function renderLogList() {
+  const list = queryElement("#logList");
+  const filtered = activeLogFilters.size === 0
+    ? appState.logs
+    : appState.logs.filter((log) => {
+        const tags = [].concat(log.symptoms, log.triggers);
+        return Array.from(activeLogFilters).every((tag) => tags.includes(tag));
+      });
+  const sorted = filtered.slice().sort((a, b) => (b.date + b.createdAt).localeCompare(a.date + a.createdAt));
+
+  if (sorted.length === 0) {
+    list.innerHTML = '<div class="empty-hint">' + (activeLogFilters.size ? "当前筛选条件下没有匹配记录" : "还没有记录。上方表单写下第一条吧。") + '</div>';
+    return;
+  }
+
+  list.innerHTML = sorted.map((log) => {
+    const symptomTags = log.symptoms.map((tag) => '<span class="mini-tag symptom">' + escapeHtml(tag) + '</span>').join("");
+    const triggerTags = log.triggers.map((tag) => '<span class="mini-tag trigger">' + escapeHtml(tag) + '</span>').join("");
+    return '<div class="log-entry">' +
+      '<div class="log-entry-head"><span class="log-entry-date">' + escapeHtml(log.date) + '</span>' +
+      '<span class="log-entry-actions"><button class="btn btn-sm btn-danger log-delete-button" data-log-id="' + log.id + '">删除</button></span></div>' +
+      ((symptomTags || triggerTags) ? '<div class="log-tags">' + symptomTags + triggerTags + '</div>' : "") +
+      (log.note ? '<div class="log-note">' + escapeHtml(log.note) + '</div>' : "") +
+      '</div>';
+  }).join("");
+
+  queryAllElements(".log-delete-button").forEach((button) => {
+    button.addEventListener("click", () => {
+      openConfirmModal("删除这条记录？", "删除后无法恢复。", "删除", () => {
+        appState.logs = appState.logs.filter((log) => log.id !== button.dataset.logId);
+        saveState();
+        renderLogStats();
+        renderLogFilterChips();
+        renderLogList();
+        showToast("已删除");
+      });
+    });
+  });
+}
+
+function resetLogForm() {
+  queryElement("#logDateInput").value = new Date().toISOString().slice(0, 10);
+  renderChipRow(queryElement("#symptomChips"), SYMPTOM_PRESETS, [], false);
+  renderChipRow(queryElement("#triggerChips"), TRIGGER_PRESETS, [], false);
+  queryElement("#symptomCustomInput").value = "";
+  queryElement("#triggerCustomInput").value = "";
+  queryElement("#logNoteInput").value = "";
+}
+
+function addLogEntry() {
+  const date = queryElement("#logDateInput").value;
+  if (!date) { showToast("请选择日期"); return; }
+  const symptoms = collectSelectedChips(queryElement("#symptomChips"));
+  const triggers = collectSelectedChips(queryElement("#triggerChips"));
+  const note = queryElement("#logNoteInput").value.trim();
+  if (symptoms.length === 0 && triggers.length === 0 && !note) {
+    showToast("症状、诱因和备注至少填写一项");
+    return;
+  }
+  appState.logs.push({ id: generateUniqueId(), date: date, symptoms: symptoms, triggers: triggers, note: note, createdAt: new Date().toISOString() });
+  saveState();
+  resetLogForm();
+  renderLogStats();
+  renderLogFilterChips();
+  renderLogList();
+  showToast("已保存");
+}
+
+function exportLogsAsMarkdown() {
+  if (appState.logs.length === 0) { showToast("暂无可导出的记录"); return; }
+  const filtered = activeLogFilters.size === 0
+    ? appState.logs
+    : appState.logs.filter((log) => {
+        const tags = [].concat(log.symptoms, log.triggers);
+        return Array.from(activeLogFilters).every((tag) => tags.includes(tag));
+      });
+  const sorted = filtered.slice().sort((a, b) => a.date.localeCompare(b.date));
+  const lines = [];
+  lines.push("# 敏护站 · 诱因日志导出");
+  lines.push("");
+  lines.push("> 导出时间：" + formatDateTime(new Date().toISOString()));
+  lines.push("> 记录来源：敏护站（纯本地记录工具）。本文件仅作个人记录与就诊参考，不构成医学诊断。");
+  if (activeLogFilters.size) lines.push("> 筛选条件：" + Array.from(activeLogFilters).join("、"));
+  lines.push("");
+  lines.push("共 " + sorted.length + " 条记录。");
+  lines.push("");
+  lines.push("| 日期 | 症状 | 可疑诱因 | 备注 |");
+  lines.push("| --- | --- | --- | --- |");
+  sorted.forEach((log) => {
+    const cell = (text) => text ? text.replace(/\|/g, "\\|").replace(/\n/g, " ") : "—";
+    lines.push("| " + log.date + " | " + cell(log.symptoms.join("、")) + " | " + cell(log.triggers.join("、")) + " | " + cell(log.note) + " |");
+  });
+  lines.push("");
+  downloadTextFile("敏护站-诱因日志-" + new Date().toISOString().slice(0, 10) + ".md", lines.join("\n"), "text/markdown;charset=utf-8");
+  showToast("已导出 Markdown");
+}
+
+/* ---------------- Knowledge base ---------------- */
+
+function renderKnowledge() {
+  const container = queryElement("#knowledgeContainer");
+  container.innerHTML = "";
+  KNOWLEDGE_GROUPS.forEach((group) => {
+    const title = document.createElement("div");
+    title.className = "kb-group-title";
+    title.textContent = group.name;
+    container.appendChild(title);
+    const grid = document.createElement("div");
+    grid.className = "kb-grid";
+    group.cards.forEach((card) => {
+      const element = document.createElement("div");
+      element.className = "kb-card" + (card.medical ? " kb-medical" : "");
+      element.innerHTML = "<h4>" + escapeHtml(card.title) + "</h4><ul>" +
+        card.points.map((point) => "<li>" + escapeHtml(point) + "</li>").join("") + "</ul>";
+      grid.appendChild(element);
+    });
+    container.appendChild(grid);
+  });
+}
+
+/* ---------------- Rest timer ---------------- */
+
+const timerState = {
+  totalSeconds: 45 * 60,
+  remainingSeconds: 45 * 60,
+  isRunning: false,
+  intervalId: null,
+  titleFlashIntervalId: null
+};
+
+function updateTimerDisplay() {
+  const minutes = Math.floor(timerState.remainingSeconds / 60);
+  const seconds = timerState.remainingSeconds % 60;
+  const padded = String(minutes).padStart(2, "0") + ":" + String(seconds).padStart(2, "0");
+  queryElement("#timerDisplay").textContent = padded;
+  queryElement("#timerProgressFill").style.width = (100 - (timerState.remainingSeconds / timerState.totalSeconds) * 100) + "%";
+}
+
+function setTimerStatus(text) { queryElement("#timerStatus").textContent = text; }
+
+function stopTitleFlash() {
+  if (timerState.titleFlashIntervalId) {
+    clearInterval(timerState.titleFlashIntervalId);
+    timerState.titleFlashIntervalId = null;
+    document.title = "敏护站 · 慢性敏感人群健康自查助手";
+  }
+}
+
+function playReminderTone() {
+  try {
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    [0, 0.25, 0.5].forEach((offset) => {
+      const oscillator = audioContext.createOscillator();
+      const gain = audioContext.createGain();
+      oscillator.frequency.value = 880;
+      oscillator.type = "sine";
+      gain.gain.setValueAtTime(0.12, audioContext.currentTime + offset);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + offset + 0.2);
+      oscillator.connect(gain).connect(audioContext.destination);
+      oscillator.start(audioContext.currentTime + offset);
+      oscillator.stop(audioContext.currentTime + offset + 0.22);
+    });
+    setTimeout(() => audioContext.close(), 1200);
+  } catch (error) { /* Audio is optional; page reminder still works. */ }
+}
+
+function onTimerFinished() {
+  timerState.isRunning = false;
+  clearInterval(timerState.intervalId);
+  timerState.intervalId = null;
+  queryElement("#timerStartButton").disabled = false;
+  queryElement("#timerPauseButton").disabled = true;
+  setTimerStatus("⏰ 时间到！起身活动一下吧");
+  playReminderTone();
+  openConfirmModal("⏰ 休息时间到", "你已经连续专注了一段时间，\n建议起身活动 2–3 分钟：接杯水、看看远处、伸展一下腰背。", "好的", () => {});
+  timerState.titleFlashIntervalId = setInterval(() => {
+    document.title = document.title.startsWith("⏰") ? "敏护站 · 慢性敏感人群健康自查助手" : "⏰ 该休息啦 · 敏护站";
+  }, 1000);
+  setTimeout(stopTitleFlash, 30000);
+}
+
+function startTimer() {
+  if (timerState.isRunning) return;
+  if (timerState.remainingSeconds <= 0) { resetTimer(); }
+  timerState.isRunning = true;
+  stopTitleFlash();
+  queryElement("#timerStartButton").disabled = true;
+  queryElement("#timerPauseButton").disabled = false;
+  setTimerStatus("计时中……");
+  timerState.intervalId = setInterval(() => {
+    timerState.remainingSeconds -= 1;
+    updateTimerDisplay();
+    if (timerState.remainingSeconds <= 0) onTimerFinished();
+  }, 1000);
+}
+
+function pauseTimer() {
+  timerState.isRunning = false;
+  clearInterval(timerState.intervalId);
+  timerState.intervalId = null;
+  queryElement("#timerStartButton").disabled = false;
+  queryElement("#timerPauseButton").disabled = true;
+  setTimerStatus("已暂停");
+}
+
+function resetTimer() {
+  pauseTimer();
+  stopTitleFlash();
+  const minutesInput = Number(queryElement("#timerMinutesInput").value);
+  const minutes = (Number.isFinite(minutesInput) && minutesInput >= 1 && minutesInput <= 180) ? Math.floor(minutesInput) : 45;
+  timerState.totalSeconds = minutes * 60;
+  timerState.remainingSeconds = minutes * 60;
+  appState.settings.timerMinutes = minutes;
+  saveState();
+  updateTimerDisplay();
+  setTimerStatus("就绪");
+  queryElement("#timerStartButton").disabled = false;
+}
+
+queryElement("#timerStartButton").addEventListener("click", startTimer);
+queryElement("#timerPauseButton").addEventListener("click", pauseTimer);
+queryElement("#timerResetButton").addEventListener("click", resetTimer);
+queryAllElements(".timer-preset").forEach((button) => {
+  button.addEventListener("click", () => {
+    queryElement("#timerMinutesInput").value = button.dataset.minutes;
+    resetTimer();
+    startTimer();
+  });
+});
+
+/* ---------------- Data management ---------------- */
+
+function refreshStorageSummary() {
+  const raw = window.localStorage.getItem(STORAGE_KEY) || "";
+  const sizeKb = (new Blob([raw]).size / 1024).toFixed(1);
+  const quizCount = Object.keys(appState.quizResults).length;
+  queryElement("#storageSummaryText").textContent =
+    "诱因日志 " + appState.logs.length + " 条 · 问卷结果 " + quizCount + " 份 · 占用约 " + sizeKb + " KB · 全部仅保存在本机浏览器";
+}
+
+function exportAllDataAsJson() {
+  const payload = { app: "minhu-station", version: 1, exportedAt: new Date().toISOString(), data: appState };
+  downloadTextFile("敏护站-备份-" + new Date().toISOString().slice(0, 10) + ".json", JSON.stringify(payload, null, 2), "application/json;charset=utf-8");
+  showToast("已导出 JSON 备份");
+}
+
+function handleImportFile(file) {
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const parsed = JSON.parse(reader.result);
+      const imported = parsed && parsed.app === "minhu-station" ? parsed.data : parsed;
+      if (!imported || !Array.isArray(imported.logs)) {
+        showToast("文件格式不正确：不是敏护站的备份");
+        return;
+      }
+      const importedLogCount = imported.logs.length;
+      openConfirmModal(
+        "导入备份",
+        "备份中包含 " + importedLogCount + " 条日志。\n\n选择「确认」将【合并】导入（重复记录自动跳过，现有数据保留）。\n如需覆盖现有数据，请先「清空全部记录」再导入。",
+        "合并导入",
+        () => {
+          const existingIds = new Set(appState.logs.map((log) => log.id));
+          let added = 0;
+          imported.logs.forEach((log) => {
+            if (log && log.id && !existingIds.has(log.id) && log.date) {
+              appState.logs.push({
+                id: log.id, date: log.date,
+                symptoms: Array.isArray(log.symptoms) ? log.symptoms : [],
+                triggers: Array.isArray(log.triggers) ? log.triggers : [],
+                note: typeof log.note === "string" ? log.note : "",
+                createdAt: log.createdAt || new Date().toISOString()
+              });
+              added += 1;
+            }
+          });
+          if (imported.quizResults && typeof imported.quizResults === "object") {
+            appState.quizResults = Object.assign({}, imported.quizResults, appState.quizResults);
+          }
+          saveState();
+          renderQuestionnaires();
+          renderLogStats();
+          renderLogFilterChips();
+          renderLogList();
+          refreshStorageSummary();
+          showToast("导入完成，新增 " + added + " 条记录");
+        }
+      );
+    } catch (error) {
+      showToast("解析失败：不是有效的 JSON 文件");
+    }
+  };
+  reader.readAsText(file, "utf-8");
+}
+
+queryElement("#refreshStorageButton").addEventListener("click", refreshStorageSummary);
+queryElement("#exportJsonButton").addEventListener("click", exportAllDataAsJson);
+queryElement("#exportMarkdownButton").addEventListener("click", exportLogsAsMarkdown);
+queryElement("#addLogButton").addEventListener("click", addLogEntry);
+queryElement("#importFileInput").addEventListener("change", (event) => {
+  if (event.target.files && event.target.files[0]) handleImportFile(event.target.files[0]);
+  event.target.value = "";
+});
+queryElement("#clearAllButton").addEventListener("click", () => {
+  openConfirmModal(
+    "清空全部本地记录？",
+    "将删除本机保存的全部问卷结果与诱因日志，此操作不可恢复。\n\n建议先在上方导出 JSON 备份。",
+    "我已了解，清空",
+    () => {
+      appState = createDefaultState();
+      saveState();
+      applyTheme();
+      renderQuestionnaires();
+      resetLogForm();
+      renderLogStats();
+      renderLogFilterChips();
+      renderLogList();
+      refreshStorageSummary();
+      resetTimer();
+      showToast("已清空全部本地记录");
+    }
+  );
+});
+
+/* ---------------- Initialization ---------------- */
+
+function initializeApp() {
+  applyTheme();
+  renderQuestionnaires();
+  renderKnowledge();
+  resetLogForm();
+  renderLogStats();
+  renderLogFilterChips();
+  renderLogList();
+  refreshStorageSummary();
+
+  /* Restore timer default length from settings. */
+  if (appState.settings.timerMinutes) {
+    queryElement("#timerMinutesInput").value = appState.settings.timerMinutes;
+    timerState.totalSeconds = appState.settings.timerMinutes * 60;
+    timerState.remainingSeconds = appState.settings.timerMinutes * 60;
+    updateTimerDisplay();
+  }
+
+  setupCustomChipInput(queryElement("#symptomCustomInput"), queryElement("#symptomChips"), SYMPTOM_PRESETS);
+  setupCustomChipInput(queryElement("#triggerCustomInput"), queryElement("#triggerChips"), TRIGGER_PRESETS);
+}
+
+document.addEventListener("DOMContentLoaded", initializeApp);
+</script>
+</body>
+</html>
