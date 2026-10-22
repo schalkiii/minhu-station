@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="敏护站 · 慢性敏感人群健康自查助手。隐私优先的纯前端静态工具：所有数据仅保存在浏览器本地，无登录、无埋点、无广告、零第三方请求。">
+<meta name="description" content="敏护站 · 慢性敏感人群健康自查与科普助手。隐私优先的纯前端静态工具：分类健康自查、诱因日志、养护知识库、病理科普、休息计时器；所有数据仅保存在浏览器本地，无登录、无埋点、无广告、零第三方请求。">
 <title>敏护站 · 慢性敏感人群健康自查助手</title>
 <link rel="canonical" href="https://schalkiii.github.io/minhu-station/">
 <meta name="color-scheme" content="light dark">
@@ -13,7 +13,7 @@
 <meta property="og:site_name" content="敏护站">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:title" content="敏护站 · 慢性敏感人群健康自查助手">
-<meta property="og:description" content="隐私优先的开源健康自我观测工作台：健康自查、诱因日志、养护知识库、休息计时器。数据只留在你的浏览器，零第三方请求。">
+<meta property="og:description" content="隐私优先的开源健康自我观测工作台：分类健康自查、诱因日志、养护知识库、病理科普、休息计时器。数据只留在你的浏览器，零第三方请求。">
 <meta property="og:url" content="https://schalkiii.github.io/minhu-station/">
 <meta property="og:image" content="https://schalkiii.github.io/minhu-station/assets/og-cover.png">
 <meta property="og:image:width" content="1200">
@@ -21,9 +21,9 @@
 <meta property="og:image:alt" content="敏护站 · 慢性敏感人群健康自查助手界面预览">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="敏护站 · 慢性敏感人群健康自查助手">
-<meta name="twitter:description" content="隐私优先的开源健康自我观测工作台：健康自查、诱因日志、养护知识库、休息计时器。">
+<meta name="twitter:description" content="隐私优先的开源健康自我观测工作台：分类健康自查、诱因日志、养护知识库、病理科普、休息计时器。">
 <meta name="twitter:image" content="https://schalkiii.github.io/minhu-station/assets/og-cover.png">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%235b8a72'/%3E%3Cpath d='M9 17.5l4.5 4.5L23 11' stroke='%23fff' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTUiIGZpbGw9IiM1YjhhNzIiLz48cGF0aCBkPSJNMzIgMTBjNy44IDAgMTQuNiAyLjEgMTguNCA0LjF2MTMuOGMwIDEwLjktNy40IDE4LjktMTguNCAyMi42LTExLTMuNy0xOC40LTExLjctMTguNC0yMi42VjE0LjFDMTcuNCAxMi4xIDI0LjIgMTAgMzIgMTBaIiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iNCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjxwYXRoIGQ9Ik0xOSAzMy41aDcuNGwzLjEtNyA1LjMgMTQgMy43LTdoNi41IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iNCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PC9zdmc+">
 <script>
 /* Apply the saved theme before first paint to avoid a light/dark flash. */
 (function () {
@@ -38,7 +38,7 @@
 })();
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebApplication","name":"敏护站","alternateName":"Minhu Station","url":"https://schalkiii.github.io/minhu-station/","description":"隐私优先的慢性敏感人群健康自查与诱因记录工具，所有数据仅保存在浏览器本地。","applicationCategory":"HealthApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript and localStorage","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"},"isAccessibleForFree":true,"license":"https://opensource.org/licenses/MIT"}
+{"@context":"https://schema.org","@type":"WebApplication","name":"敏护站","alternateName":"Minhu Station","url":"https://schalkiii.github.io/minhu-station/","description":"隐私优先的慢性敏感人群健康自查、诱因记录与病理科普工具，所有数据仅保存在浏览器本地。","applicationCategory":"HealthApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript and localStorage","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"},"isAccessibleForFree":true,"license":"https://opensource.org/licenses/MIT"}
 </script>
 <style>
 /* ============================================================
@@ -137,11 +137,14 @@ input, select, textarea { font-family: inherit; font-size: 0.95rem; }
 }
 .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.05rem; color: var(--color-text); }
 .brand-mark {
-  width: 30px; height: 30px; border-radius: 8px;
-  background: var(--color-accent); color: #fff;
+  width: 32px; height: 32px; border-radius: 9px;
+  background: linear-gradient(145deg, #6fa189, var(--color-accent-strong));
+  color: #fff;
   display: flex; align-items: center; justify-content: center;
-  font-size: 0.85rem; font-weight: 700; flex-shrink: 0;
+  box-shadow: 0 2px 7px rgba(61, 104, 82, 0.24);
+  flex-shrink: 0;
 }
+.brand-mark svg { width: 21px; height: 21px; display: block; }
 .brand-sub { font-size: 0.72rem; font-weight: 400; color: var(--color-text-faint); display: block; line-height: 1.2; }
 
 .main-nav { display: flex; gap: 4px; align-items: center; }
@@ -280,7 +283,59 @@ main { max-width: 1080px; margin: 0 auto; padding: 26px 20px 60px; }
 .quiz-result.level-high .level-label { color: var(--color-danger); }
 .quiz-result ul { margin: 8px 0 0 18px; }
 .quiz-result li { font-size: 0.9rem; margin-bottom: 4px; }
+.quiz-result-actions { margin-top: 12px; }
 .score-note { font-size: 0.82rem; color: var(--color-text-faint); margin-top: 10px; }
+
+/* questionnaire category tabs */
+.quiz-tabs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin-bottom: 8px; }
+.quiz-tab {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 2px;
+  border: 1px solid var(--color-border); background: var(--color-surface);
+  border-radius: 12px; padding: 10px 12px; text-align: left;
+  transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
+}
+.quiz-tab:hover { border-color: var(--color-accent); }
+.quiz-tab[aria-selected="true"] {
+  background: var(--color-accent-soft); border-color: var(--color-accent);
+  box-shadow: inset 0 0 0 1px var(--color-accent);
+}
+.quiz-tab-label { display: flex; align-items: center; gap: 5px; font-size: 0.9rem; font-weight: 650; color: var(--color-text); white-space: nowrap; }
+.quiz-tab-state { font-size: 0.72rem; color: var(--color-text-faint); }
+.quiz-tab.is-done .quiz-tab-state { color: var(--color-safe); font-weight: 600; }
+.quiz-tab.is-done .quiz-tab-state::before { content: "✓ "; }
+.quiz-progress {
+  display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap;
+  font-size: 0.78rem; color: var(--color-text-faint); margin: 0 2px 14px;
+}
+.quiz-panel { display: none; }
+.quiz-panel.active { display: block; }
+.quiz-panel .quiz-meta { margin-top: 2px; }
+
+@media (max-width: 640px) {
+  .quiz-tabs { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px; }
+  .quiz-tab { padding: 9px 10px; }
+  .quiz-tab-label { font-size: 0.85rem; }
+}
+
+/* pathology / mechanism explainers */
+.science-nav { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 16px; }
+.science-topic { margin-bottom: 16px; scroll-margin-top: 78px; }
+.science-topic h2 { font-size: 1.15rem; margin-bottom: 6px; }
+.science-lead { color: var(--color-text-secondary); font-size: 0.93rem; margin-bottom: 4px; }
+.science-block { margin-top: 14px; }
+.science-block h4 { font-size: 0.9rem; color: var(--color-accent-strong); margin-bottom: 6px; }
+.science-block ul { margin-left: 18px; }
+.science-block li { font-size: 0.9rem; color: var(--color-text-secondary); margin-bottom: 5px; }
+.science-boundary {
+  margin-top: 14px; padding: 10px 14px; font-size: 0.85rem; color: var(--color-text-secondary);
+  background: var(--color-warn-soft); border-left: 3px solid var(--color-warn-border); border-radius: 8px;
+}
+.science-evidence { margin-top: 18px; }
+.science-evidence ul { margin: 8px 0 0 18px; }
+.science-evidence li { font-size: 0.88rem; color: var(--color-text-secondary); margin-bottom: 6px; }
+.kb-card p { font-size: 0.88rem; color: var(--color-text-secondary); }
+.science-myth h4 { display: flex; align-items: baseline; gap: 8px; }
+.science-myth h4 span { font-size: 0.7rem; color: var(--color-danger); letter-spacing: 0.06em; }
 
 /* ---------- Trigger log ---------- */
 .stats-bar { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 18px; }
@@ -465,7 +520,12 @@ main { max-width: 1080px; margin: 0 auto; padding: 26px 20px 60px; }
 <header class="site-header">
   <div class="header-inner">
     <div class="brand">
-      <div class="brand-mark" aria-hidden="true">敏</div>
+      <div class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M16 3.2c4.6 0 8.8 1.3 11 2.5v8.1c0 6.3-4.5 11-11 13.2C9.5 24.8 5 20.1 5 13.8V5.7C7.2 4.5 11.4 3.2 16 3.2Z" stroke="currentColor" stroke-width="2.1" stroke-linejoin="round"/>
+          <path d="M8.6 16.6h4.2l2-4.2 3.2 8.4 2.2-4.2h3.2" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
       <div>敏护站<span class="brand-sub">慢性敏感人群健康自查助手</span></div>
     </div>
     <nav class="main-nav" id="desktopNav" aria-label="主导航">
@@ -473,6 +533,7 @@ main { max-width: 1080px; margin: 0 auto; padding: 26px 20px 60px; }
       <button class="nav-tab" data-tab="check">健康自查</button>
       <button class="nav-tab" data-tab="log">诱因日志</button>
       <button class="nav-tab" data-tab="knowledge">养护知识库</button>
+      <button class="nav-tab" data-tab="science">病理科普</button>
       <button class="nav-tab" data-tab="timer">休息计时器</button>
       <button class="nav-tab" data-tab="data">数据管理</button>
     </nav>
@@ -486,6 +547,7 @@ main { max-width: 1080px; margin: 0 auto; padding: 26px 20px 60px; }
     <button class="nav-tab" data-tab="check">健康自查</button>
     <button class="nav-tab" data-tab="log">诱因日志</button>
     <button class="nav-tab" data-tab="knowledge">养护知识库</button>
+    <button class="nav-tab" data-tab="science">病理科普</button>
     <button class="nav-tab" data-tab="timer">休息计时器</button>
     <button class="nav-tab" data-tab="data">数据管理</button>
   </nav>
@@ -533,9 +595,9 @@ main { max-width: 1080px; margin: 0 auto; padding: 26px 20px 60px; }
       <div class="feature-item"><div class="fi-icon">🩺</div><h4>健康自查</h4><p>四套日常观察问卷：脊柱劳损、偏头痛诱因、消化道敏感、睡眠疲劳。即时出结果与分级养护建议。</p></div>
       <div class="feature-item"><div class="fi-icon">📔</div><h4>诱因日志</h4><p>像记账一样记录症状与可疑诱因，支持筛选与 Markdown 导出，方便就诊时直接出示。</p></div>
       <div class="feature-item"><div class="fi-icon">🌿</div><h4>养护知识库</h4><p>脊柱养护、避光控因、低敏饮食、护眼休息、就医提示清单，内容保守严谨、持续完善。</p></div>
+      <div class="feature-item"><div class="fi-icon">🧬</div><h4>病理科普</h4><p>解释慢性疼痛、偏头痛、肠道敏感与睡眠问题背后的机制，分清「已明确」与「仍未知」。</p></div>
       <div class="feature-item"><div class="fi-icon">⏲️</div><h4>休息计时器</h4><p>自定义久坐提醒周期，到点页面提醒，帮打断长时间连续伏案。</p></div>
       <div class="feature-item"><div class="fi-icon">📦</div><h4>数据管理</h4><p>一键导出 JSON 备份、导入恢复、清空本地记录，数据主权完全在你手里。</p></div>
-      <div class="feature-item"><div class="fi-icon">🌙</div><h4>深色模式</h4><p>跟随系统或手动切换，夜间记录不刺眼。</p></div>
     </div>
 
     <div class="card">
@@ -543,7 +605,7 @@ main { max-width: 1080px; margin: 0 auto; padding: 26px 20px 60px; }
       <ul class="audience-list">
         <li>第一步：花 3–5 分钟完成「健康自查」中与你相关的问卷，了解当前观察基线；</li>
         <li>第二步：日常在「诱因日志」随手记录症状与可疑诱因，坚持 2–4 周形成台账；</li>
-        <li>第三步：翻看「养护知识库」，选择 1–2 项低成本的干预习惯开始尝试；</li>
+        <li>第三步：翻看「病理科普」理解症状背后的机制，再从「养护知识库」选择 1–2 项低成本的干预习惯开始尝试；</li>
         <li>第四步：开启「休息计时器」，让定时起身成为默认动作；</li>
         <li>第五步：就诊前用「导出 Markdown」整理台账，交给医生作参考。</li>
       </ul>
@@ -618,6 +680,17 @@ main { max-width: 1080px; margin: 0 auto; padding: 26px 20px 60px; }
     <h1 class="section-title">养护知识库</h1>
     <p class="section-sub">低成本、可长期坚持的日常养护参考，全部内容静态内置。</p>
     <div id="knowledgeContainer"></div>
+  </section>
+
+  <!-- ================= Panel: Science ================= -->
+  <section class="panel" id="panel-science">
+    <div class="disclaimer-banner">
+      <span class="icon">⚠️</span>
+      <div>本节解释的是<strong>常见机制与通用研究共识</strong>，不是对你个人症状的诊断。机制解释也不能等同于治疗方案，具体判断请交给医生。</div>
+    </div>
+    <h1 class="section-title">病理科普</h1>
+    <p class="section-sub">理解「为什么会这样」，能帮你更准确地记录、更从容地和医生沟通，也能少一些不必要的恐慌。</p>
+    <div id="scienceContainer"></div>
   </section>
 
   <!-- ================= Panel: Rest timer ================= -->
@@ -719,6 +792,8 @@ const QUESTIONNAIRES = [
   {
     id: "spine",
     tag: "脊柱 / 关节",
+    tabLabel: "脊柱 / 关节",
+    icon: "🪑",
     title: "脊柱与关节劳损日常观察",
     intro: "面向长期伏案人群的日常观察问卷，重点关注久坐负荷与晨起僵硬等信号。",
     questions: [
@@ -739,6 +814,8 @@ const QUESTIONNAIRES = [
   {
     id: "migraine",
     tag: "偏头痛",
+    tabLabel: "偏头痛",
+    icon: "🌗",
     title: "偏头痛诱因日常筛查",
     intro: "围绕咖啡因、睡眠、光照、压力等常见触发因素的观察问卷，帮助你定位个人诱因。",
     questions: [
@@ -759,6 +836,8 @@ const QUESTIONNAIRES = [
   {
     id: "gut",
     tag: "消化道",
+    tabLabel: "消化道",
+    icon: "🍚",
     title: "消化道敏感日常观察",
     intro: "面向肠道敏感人群（如肠易激样不适）的日常观察问卷，聚焦症状频率与饮食关联。",
     questions: [
@@ -778,6 +857,8 @@ const QUESTIONNAIRES = [
   {
     id: "sleep",
     tag: "睡眠",
+    tabLabel: "睡眠",
+    icon: "🌙",
     title: "睡眠质量与疲劳度观察",
     intro: "聚焦入睡、夜醒、作息漂移与日间功能的日常观察问卷。",
     questions: [
@@ -836,6 +917,102 @@ const KNOWLEDGE_GROUPS = [
       { title: "建议尽快就医评估的情形", medical: true, points: ["突发剧烈头痛，或头痛模式与以往明显不同。", "头痛伴随发热、颈部僵硬、意识或言语改变。", "肢体麻木无力、视物成双、行走不稳。", "腰背痛伴下肢无力、麻木，或大小便功能异常。", "消化道症状持续数周不缓解，伴体重下降、黑便或血便。", "长期失眠叠加显著情绪低落或兴趣减退。", "本清单并不完整，任何让你不安的持续变化，都值得交给专业医生判断。"] }
     ]
   }
+];
+
+/* Mechanism explainers. These describe general pathophysiology and
+   evidence boundaries; they must never read as personal diagnosis. */
+const SCIENCE_TOPICS = [
+  {
+    id: "spine",
+    tag: "脊柱 / 关节",
+    title: "久坐后的酸痛，不只是「姿势不对」",
+    lead: "静态负荷、肌肉疲劳和神经系统的敏感化，往往同时在发生。",
+    mechanism: [
+      "长时间保持坐姿时，颈肩、腰背的肌肉需要持续低强度收缩来维持姿势，局部血流与代谢变慢，容易出现酸胀、发紧和压痛点。",
+      "椎间盘、关节囊和韧带里分布着机械感受器。持续压力和反复的微损伤会让这些感受器更敏感，同样的负荷更容易被感知为疼痛。",
+      "如果疼痛反复数周以上，脊髓和大脑对疼痛信号的处理也会改变，出现「中枢敏化」：刺激没有变大，疼痛却被放大。",
+      "夜间静止后组织液重新分布，早晨起床时会有短暂僵硬；活动后逐渐缓解是常见现象，但僵硬持续很久则值得进一步评估。"
+    ],
+    meaning: [
+      "影像报告上的「椎间盘膨出」「骨质增生」在无症状人群中也很常见，图像异常与疼痛程度并不总是一致。",
+      "「查不出结构问题」不等于「疼痛是想出来的」。中枢敏化是真实的生理改变，不是意志力问题。",
+      "规律起身、睡眠、压力管理和渐进运动之所以有帮助，部分原因就是它们同时作用于肌肉负荷和神经敏感化。",
+      "把「每 30–45 分钟起身 2–3 分钟」当作打断静态负荷的最小动作，比追求某个完美坐姿更可持续。"
+    ],
+    boundary: "出现进行性肢体无力、麻木、行走不稳、大小便功能异常，或夜间痛醒持续加重时，应优先就医排查，不要仅靠自我观察。"
+  },
+  {
+    id: "migraine",
+    tag: "偏头痛",
+    title: "偏头痛不是「普通的头痛」",
+    lead: "它涉及三叉神经血管系统、脑膜与神经递质，而不是单纯的「血管扩张」。",
+    mechanism: [
+      "偏头痛发作时，三叉神经末梢释放 CGRP 等神经肽，使脑膜血管扩张并增强疼痛信号传递，信号经三叉神经节传回脑干与丘脑。",
+      "部分人在发作前出现视觉先兆（闪光、暗点、锯齿图案），与大脑皮层扩散性抑制（CSD）有关；先兆通常在数十分钟内逐渐展开。",
+      "诱因往往不是单一的，而是睡眠、咖啡因、漏餐、压力、天气、激素等多个因素叠加，越过个人阈值后触发。",
+      "频繁使用急性止痛药可能让发作越来越频繁，形成「药物过量性头痛」；这不是「上瘾」，而是用药节律改变了疼痛处理。"
+    ],
+    meaning: [
+      "反复发作、单侧搏动、活动后加重、伴恶心或畏光畏声，是偏头痛常见的表现组合，但确诊仍需医生依据病史判断。",
+      "「每次都硬扛」和「一痛就频繁吃药」都不是好策略；记录发作与用药，能帮助医生制定更合适的方案。",
+      "CGRP 通路的发现推动了新一代预防药物，这说明偏头痛有明确的生物学机制，不是「矫情」或「想太多」。",
+      "规律睡眠、固定进餐、定量咖啡因、管理强光噪音刺激，是成本较低的基础措施。"
+    ],
+    boundary: "突发「人生最剧烈」的头痛、伴发热颈强、意识或言语改变、肢体无力、视物成双，需立即就医，不要等待自行缓解。"
+  },
+  {
+    id: "gut",
+    tag: "消化道",
+    title: "肠道敏感，是脑与肠在「双向通话」",
+    lead: "肠易激样不适常涉及内脏高敏感、动力改变和脑-肠轴，而不是「肠子坏了」。",
+    mechanism: [
+      "肠道壁内的肠神经系统与迷走神经、脊髓把信号传到脑干和大脑；压力、睡眠和情绪会反过来调节肠道动力与感觉阈值。",
+      "内脏高敏感的人，对正常的气体扩张、蠕动或排便刺激也会感到更强的不适，这解释了为什么检查「没发现问题」但症状真实存在。",
+      "部分可发酵碳水化合物（FODMAP）在小肠未被完全吸收，进入结肠后被细菌发酵产气，可能放大腹胀与腹痛；低 FODMAP 饮食对部分肠易激人群有效，但限制较多，适合在专业指导下短期尝试。",
+      "进食过快、深夜进食、酒精和大量咖啡因，也会通过动力与胃酸分泌影响症状。"
+    ],
+    meaning: [
+      "症状与压力相关，不等于「心理作用」；脑-肠轴是生理通路，情绪和肠道确实会互相影响。",
+      "记录「吃了什么—多久后出现—持续多久」，比单次不适后就永久忌口更能找到个人规律。",
+      "「排除—复核」比大范围忌口更稳妥：可疑食物减少 2 周，观察变化，再少量恢复验证。",
+      "规律三餐、细嚼慢咽、适量活动与睡眠，是对大多数人都安全的底座。"
+    ],
+    boundary: "排便习惯持续改变超过数周，或伴体重明显下降、黑便/血便、夜间痛醒、贫血、发热时，应尽快到消化内科就诊。"
+  },
+  {
+    id: "sleep",
+    tag: "睡眠",
+    title: "睡眠由两套系统共同决定",
+    lead: "「睡眠压力」和「昼夜节律」错位，是很多入睡困难与日间疲惫的底层原因。",
+    mechanism: [
+      "觉醒时间越长，腺苷等促眠物质累积越多，形成「睡眠压力」；咖啡因的作用之一是阻断腺苷受体，让压力信号被暂时屏蔽，而不是消除疲劳。",
+      "视交叉上核驱动的昼夜节律决定你在什么时间更容易入睡。固定起床时间、早晨见光，是给这套时钟对时的最强信号。",
+      "酒精可能让人更快入睡，但会改变睡眠结构，后半夜更容易醒、做梦增多、恢复感变差。",
+      "长期失眠往往形成「越怕睡不着越清醒」的条件反射；失眠认知行为治疗（CBT-I）正是指向这个机制，被多部指南列为慢性失眠的一线治疗。"
+    ],
+    meaning: [
+      "「必须睡满 8 小时」不是铁律；成年人常见需要约 7–9 小时，个体差异存在，白天功能状态比单一数字更重要。",
+      "咖啡因的半衰期个体差异很大，通常有数小时；下午摄入可能持续影响夜间入睡。",
+      "周末大幅补觉会让作息相位后移，周一更难起床；固定起床时间通常比强迫自己早睡更有效。",
+      "睡前 1 小时离屏、卧室暗静稍凉、下午后控制咖啡因，是低成本且证据相对一致的措施。",
+      "如果被反映打鼾严重、呼吸暂停或白天不可抗拒地嗜睡，应排查睡眠呼吸问题，而不是只当作「睡得沉」。"
+    ],
+    boundary: "慢性失眠、日间功能明显受损，或怀疑睡眠呼吸暂停时，建议到睡眠专科/神经内科评估；不要自行长期服用助眠药物。"
+  }
+];
+
+const SCIENCE_COMMON = [
+  { title: "应激轴与自律神经", points: ["压力通过下丘脑-垂体-肾上腺轴与交感神经，改变疼痛阈值、肠道动力和睡眠质量。", "这也是为什么同一段时间里，腰痛、肠胃不适和失眠容易一起变重。", "呼吸训练、规律运动、减少连续高压暴露，作用点都在这里。"] },
+  { title: "睡眠是共同的放大器", points: ["睡眠不足会降低疼痛耐受、增加对负面信息的关注，也会扰乱食欲与血糖。", "一晚没睡好之后症状更明显，不代表病情突然恶化。", "先把睡眠稳定性拉回来，常常能连带改善其他症状。"] },
+  { title: "中枢敏化不是「想太多」", points: ["反复的疼痛、感染、压力都可能让神经系统进入高敏感状态。", "它真实存在，也可以随时间和干预改善。", "「检查正常」与「症状真实」可以同时成立。"] }
+];
+
+const SCIENCE_MYTHS = [
+  { title: "疼就应该彻底不动", text: "急性期适当减少负荷可以，但长期完全不动会让肌肉更弱、耐受更差。渐进活动通常更有利。" },
+  { title: "偏头痛是矫情、想太多", text: "偏头痛有明确的三叉神经血管机制和遗传易感性，是神经系统疾病，不是性格问题。" },
+  { title: "肠道敏感是心理作用", text: "脑-肠轴是双向生理通路，压力会改变动力与感觉阈值，但症状不是「编出来的」。" },
+  { title: "周末补觉能把睡眠债还清", text: "补觉能缓解部分困倦，但大幅作息漂移会扰乱节律；固定起床时间更关键。" },
+  { title: "姿势完美就不会腰痛", text: "不存在单一的「完美姿势」。持续静态负荷、缺乏活动、睡眠与压力都参与其中，规律变换姿势更重要。" }
 ];
 
 /* ---------------- Persistent state ---------------- */
@@ -970,7 +1147,7 @@ function downloadTextFile(fileName, textContent, mimeType) {
 
 /* ---------------- Navigation ---------------- */
 
-const TAB_NAMES = ["home", "check", "log", "knowledge", "timer", "data"];
+const TAB_NAMES = ["home", "check", "log", "knowledge", "science", "timer", "data"];
 
 function tabFromHash() {
   const requested = window.location.hash.replace(/^#\/?/, "");
@@ -1054,44 +1231,92 @@ function resolveQuizLevel(score, maxScore) {
   return { key: "high", label: "建议尽快就医评估", text: "观察到的信号较多或较重，建议交给专业医生评估。" };
 }
 
+let activeQuizId = null;
+
+function quizTabStateText(quizId) {
+  const result = appState.quizResults[quizId];
+  return result ? "已记录 " + result.score + "/" + result.maxScore : "未开始";
+}
+
+function quizDoneCount() {
+  return QUESTIONNAIRES.filter((quiz) => appState.quizResults[quiz.id]).length;
+}
+
+function updateQuizTabMeta(quizId) {
+  const tab = queryElement("#quiz-tab-" + quizId);
+  if (!tab) return;
+  const result = appState.quizResults[quizId];
+  tab.classList.toggle("is-done", !!result);
+  const stateElement = tab.querySelector(".quiz-tab-state");
+  if (stateElement) stateElement.textContent = quizTabStateText(quizId);
+  const progress = queryElement("[data-quiz-progress]");
+  if (progress) progress.textContent = "已完成 " + quizDoneCount() + " / " + QUESTIONNAIRES.length;
+}
+
+function activateQuizTab(quizId, shouldFocus) {
+  const panels = queryAllElements(".quiz-panel");
+  if (!panels.some((panel) => panel.dataset.quizPanel === quizId)) return;
+  activeQuizId = quizId;
+  queryAllElements(".quiz-tab").forEach((tab) => {
+    const selected = tab.dataset.quizId === quizId;
+    tab.setAttribute("aria-selected", selected ? "true" : "false");
+    tab.tabIndex = selected ? 0 : -1;
+    if (selected && shouldFocus) tab.focus();
+  });
+  panels.forEach((panel) => {
+    panel.classList.toggle("active", panel.dataset.quizPanel === quizId);
+  });
+}
+
 function renderQuestionnaires() {
   const container = queryElement("#quizContainer");
-  container.innerHTML = "";
-  QUESTIONNAIRES.forEach((quiz) => {
-    const card = document.createElement("div");
-    card.className = "card";
-    const maxScore = getQuizMaxScore(quiz);
+  const firstIncomplete = QUESTIONNAIRES.find((quiz) => !appState.quizResults[quiz.id]);
+  const initialId = firstIncomplete ? firstIncomplete.id : QUESTIONNAIRES[0].id;
+  activeQuizId = initialId;
 
-    card.innerHTML =
+  const tabsHtml = QUESTIONNAIRES.map((quiz) => {
+    const selected = quiz.id === initialId;
+    const result = appState.quizResults[quiz.id];
+    return '<button class="quiz-tab' + (result ? " is-done" : "") + '" id="quiz-tab-' + quiz.id + '" type="button" role="tab" aria-selected="' + (selected ? "true" : "false") + '" aria-controls="quiz-panel-' + quiz.id + '" data-quiz-id="' + quiz.id + '" tabindex="' + (selected ? "0" : "-1") + '">' +
+      '<span class="quiz-tab-label"><span aria-hidden="true">' + escapeHtml(quiz.icon) + '</span>' + escapeHtml(quiz.tabLabel) + '</span>' +
+      '<span class="quiz-tab-state">' + quizTabStateText(quiz.id) + '</span>' +
+      '</button>';
+  }).join("");
+
+  const panelsHtml = QUESTIONNAIRES.map((quiz) => {
+    const maxScore = getQuizMaxScore(quiz);
+    const selected = quiz.id === initialId;
+    const questionsHtml = quiz.questions.map((question, questionIndex) => {
+      const rows = question.options.map((option, optionIndex) => {
+        const inputType = question.type === "single" ? "radio" : "checkbox";
+        const inputName = quiz.id + "-q" + questionIndex;
+        return '<label class="option-row"><input type="' + inputType + '" name="' + inputName + '" value="' + optionIndex + '"><span>' + escapeHtml(option[0]) + '</span></label>';
+      }).join("");
+      return '<div class="quiz-question">' + escapeHtml((questionIndex + 1) + ". " + question.text) + '</div>' +
+             (question.type === "multi" ? '<div class="score-note" style="margin:0 0 4px">多选题</div>' : "") + rows;
+    }).join("");
+
+    const previous = appState.quizResults[quiz.id];
+    const resultHtml = previous ? buildResultHtml(quiz, previous.score, previous.maxScore, previous.dateLabel) : "";
+
+    return '<div class="card quiz-panel' + (selected ? " active" : "") + '" id="quiz-panel-' + quiz.id + '" role="tabpanel" aria-labelledby="quiz-tab-' + quiz.id + '" data-quiz-panel="' + quiz.id + '">' +
       '<div class="quiz-meta"><span class="quiz-tag">' + escapeHtml(quiz.tag) + '</span></div>' +
       '<h3>' + escapeHtml(quiz.title) + '</h3>' +
       '<p>' + escapeHtml(quiz.intro) + '</p>' +
-      '<div class="quiz-questions" data-quiz-id="' + quiz.id + '">' +
-      quiz.questions.map((question, questionIndex) => {
-        const rows = question.options.map((option, optionIndex) => {
-          const inputType = question.type === "single" ? "radio" : "checkbox";
-          const inputName = quiz.id + "-q" + questionIndex;
-          return '<label class="option-row"><input type="' + inputType + '" name="' + inputName + '" value="' + optionIndex + '"><span>' + escapeHtml(option[0]) + '</span></label>';
-        }).join("");
-        return '<div class="quiz-question">' + escapeHtml((questionIndex + 1) + ". " + question.text) + '</div>' +
-               (question.type === "multi" ? '<div class="score-note" style="margin:0 0 4px">多选题</div>' : "") + rows;
-      }).join("") +
-      '</div>' +
+      '<div class="quiz-questions" data-quiz-id="' + quiz.id + '">' + questionsHtml + '</div>' +
       '<div style="margin-top:18px;display:flex;gap:10px;flex-wrap:wrap">' +
       '<button class="btn btn-primary quiz-submit-button" data-quiz-id="' + quiz.id + '">查看结果</button>' +
       '<button class="btn quiz-reset-button" data-quiz-id="' + quiz.id + '">重填</button>' +
       '</div>' +
-      '<div class="quiz-result-slot" data-quiz-id="' + quiz.id + '"></div>' +
-      '<p class="score-note">本问卷满分 ' + maxScore + ' 分，仅反映日常观察到的负荷程度，不构成诊断。</p>';
+      '<div class="quiz-result-slot" data-quiz-id="' + quiz.id + '">' + resultHtml + '</div>' +
+      '<p class="score-note">本问卷满分 ' + maxScore + ' 分，仅反映日常观察到的负荷程度，不构成诊断。</p>' +
+      '</div>';
+  }).join("");
 
-    /* Restore previous result summary if present. */
-    const previous = appState.quizResults[quiz.id];
-    if (previous) {
-      const slot = card.querySelector(".quiz-result-slot");
-      slot.innerHTML = buildResultHtml(quiz, previous.score, previous.maxScore, previous.dateLabel);
-    }
-    container.appendChild(card);
-  });
+  container.innerHTML =
+    '<div class="quiz-tabs" role="tablist" aria-label="自查问卷类别">' + tabsHtml + '</div>' +
+    '<div class="quiz-progress"><span data-quiz-progress>已完成 ' + quizDoneCount() + ' / ' + QUESTIONNAIRES.length + '</span><span>四套问卷相互独立，结果只保存在本机</span></div>' +
+    panelsHtml;
 
   queryAllElements(".quiz-submit-button").forEach((button) => {
     button.addEventListener("click", () => submitQuiz(button.dataset.quizId));
@@ -1106,10 +1331,37 @@ function renderQuestionnaires() {
         delete appState.quizResults[quizId];
         saveState();
       }
+      updateQuizTabMeta(quizId);
       showToast("已清空本题作答");
     });
   });
 }
+
+queryElement("#quizContainer").addEventListener("click", (event) => {
+  const tab = event.target.closest(".quiz-tab");
+  if (tab) {
+    activateQuizTab(tab.dataset.quizId, false);
+    return;
+  }
+  const scienceButton = event.target.closest("[data-science-topic]");
+  if (scienceButton) goToTab("science");
+});
+
+queryElement("#quizContainer").addEventListener("keydown", (event) => {
+  const tab = event.target.closest(".quiz-tab");
+  if (!tab) return;
+  const tabs = queryAllElements(".quiz-tab");
+  const index = tabs.indexOf(tab);
+  let target = null;
+  if (event.key === "ArrowRight" || event.key === "ArrowDown") target = tabs[(index + 1) % tabs.length];
+  if (event.key === "ArrowLeft" || event.key === "ArrowUp") target = tabs[(index - 1 + tabs.length) % tabs.length];
+  if (event.key === "Home") target = tabs[0];
+  if (event.key === "End") target = tabs[tabs.length - 1];
+  if (target) {
+    event.preventDefault();
+    activateQuizTab(target.dataset.quizId, true);
+  }
+});
 
 function queryAllIn(rootElement, selector) { return Array.from(rootElement.querySelectorAll(selector)); }
 
@@ -1121,6 +1373,7 @@ function buildResultHtml(quiz, score, maxScore, dateLabel) {
     '<div style="font-size:0.9rem">' + escapeHtml(level.text) + '</div>' +
     '<ul>' + adviceItems + '</ul>' +
     '<div class="score-note">得分 ' + score + ' / ' + maxScore + ' · 计算于 ' + escapeHtml(dateLabel) + ' · 本结果保存在本机，不构成诊断</div>' +
+    '<div class="quiz-result-actions"><button class="btn btn-sm quiz-science-button" type="button" data-science-topic="' + quiz.id + '">了解背后的机制 →</button></div>' +
     '</div>';
 }
 
@@ -1151,7 +1404,10 @@ function submitQuiz(quizId) {
 
   appState.quizResults[quizId] = { score: score, maxScore: maxScore, dateLabel: dateLabel };
   saveState();
-  queryElement('.quiz-result-slot[data-quiz-id="' + quizId + '"]').innerHTML = buildResultHtml(quiz, score, maxScore, dateLabel);
+  const resultSlot = queryElement('.quiz-result-slot[data-quiz-id="' + quizId + '"]');
+  resultSlot.innerHTML = buildResultHtml(quiz, score, maxScore, dateLabel);
+  updateQuizTabMeta(quizId);
+  resultSlot.scrollIntoView({ behavior: "smooth", block: "nearest" });
   showToast("结果已保存到本机");
 }
 
@@ -1455,6 +1711,58 @@ function renderKnowledge() {
       grid.appendChild(element);
     });
     container.appendChild(grid);
+  });
+}
+
+function renderScience() {
+  const container = queryElement("#scienceContainer");
+  const list = (items) => items.map((item) => "<li>" + escapeHtml(item) + "</li>").join("");
+
+  const nav = SCIENCE_TOPICS.map((topic) =>
+    '<button class="chip" type="button" data-science-jump="' + topic.id + '">' + escapeHtml(topic.tag) + '</button>'
+  ).join("");
+
+  const topics = SCIENCE_TOPICS.map((topic) =>
+    '<article class="card science-topic" id="science-' + topic.id + '">' +
+      '<div class="quiz-meta"><span class="quiz-tag">' + escapeHtml(topic.tag) + '</span></div>' +
+      '<h2>' + escapeHtml(topic.title) + '</h2>' +
+      '<p class="science-lead">' + escapeHtml(topic.lead) + '</p>' +
+      '<div class="science-block"><h4>身体里发生了什么</h4><ul>' + list(topic.mechanism) + '</ul></div>' +
+      '<div class="science-block"><h4>可以怎么理解</h4><ul>' + list(topic.meaning) + '</ul></div>' +
+      '<div class="science-boundary"><strong>边界提醒：</strong>' + escapeHtml(topic.boundary) + '</div>' +
+    '</article>'
+  ).join("");
+
+  const common = '<div class="kb-group-title">🔗 为什么这些问题常常一起出现</div>' +
+    '<div class="kb-grid">' + SCIENCE_COMMON.map((card) =>
+      '<div class="kb-card"><h4>' + escapeHtml(card.title) + '</h4><ul>' + list(card.points) + '</ul></div>'
+    ).join("") + '</div>';
+
+  const myths = '<div class="kb-group-title">❌ 五个常见误解</div>' +
+    '<div class="kb-grid">' + SCIENCE_MYTHS.map((myth, index) =>
+      '<div class="kb-card science-myth"><h4><span>误解 ' + String(index + 1).padStart(2, "0") + '</span>' + escapeHtml(myth.title) + '</h4><p>' + escapeHtml(myth.text) + '</p></div>'
+    ).join("") + '</div>';
+
+  const evidence = '<div class="card science-evidence">' +
+    '<h3>怎么读这些机制解释</h3>' +
+    '<ul>' +
+      '<li>机制解释帮助你理解「为什么会这样」，不等于对你个人的诊断，也不等于某一种疗法一定有效。</li>' +
+      '<li>文中「常见」「部分人」「相关」等措辞是刻意保留的：群体研究的相关性，不能直接推导到个体因果。</li>' +
+      '<li>同一症状可能由不同原因引起；出现警示信号时，机制科普不能替代检查。</li>' +
+      '<li>如果你要查原始资料，优先看临床指南与系统综述，而不是单篇动物实验或社交媒体结论。</li>' +
+    '</ul>' +
+    '<p class="score-note">参考资料（通用共识，非个体诊疗建议）：ICHD-3 国际头痛分类；Rome IV 功能性胃肠病诊断标准；AASM 失眠与睡眠呼吸暂停指南；NICE NG193 慢性疼痛评估与管理指南；WHO 2020 身体活动与久坐行为指南。</p>' +
+    '</div>';
+
+  container.innerHTML =
+    '<div class="science-nav" aria-label="主题快速跳转">' + nav + '</div>' +
+    topics + common + myths + evidence;
+
+  queryAllElements("[data-science-jump]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const target = document.getElementById("science-" + button.dataset.scienceJump);
+      if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
   });
 }
 
@@ -1817,6 +2125,7 @@ function initializeApp() {
   applyTheme();
   renderQuestionnaires();
   renderKnowledge();
+  renderScience();
   resetLogForm();
   renderLogStats();
   renderLogFilterChips();
